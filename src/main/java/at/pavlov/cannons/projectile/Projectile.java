@@ -7,6 +7,7 @@ import at.pavlov.cannons.container.SoundHolder;
 import at.pavlov.cannons.container.SpawnEntityHolder;
 import at.pavlov.cannons.container.SpawnMaterialHolder;
 import org.bukkit.FireworkEffect;
+import org.bukkit.Particle;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
@@ -42,7 +43,14 @@ public class Projectile implements Cloneable{
     private int smokeTrailDistance;
     private BlockData smokeTrailMaterial;
     private double smokeTrailDuration;
-	
+	private boolean smokeTrailParticleEnabled;
+	private Particle smokeTrailParticleType;
+	private int smokeTrailParticleCount;
+	private double smokeTrailParticleOffsetX;
+	private double smokeTrailParticleOffsetY;
+	private double smokeTrailParticleOffsetZ;
+	private double smokeTrailParticleSpeed;
+
 	//explosion
 	private float explosionPower;
 	private boolean explosionPowerDependsOnVelocity;
@@ -729,4 +737,47 @@ public class Projectile implements Cloneable{
     public void setSmokeTrailDistance(int smokeTrailDistance) {
         this.smokeTrailDistance = smokeTrailDistance;
     }
+
+	public void setSmokeTrailParticleEnabled(boolean smokeTrailParticleEnabled) {
+		this.smokeTrailParticleEnabled = smokeTrailParticleEnabled;
+	}
+
+	public boolean isSmokeTrailParticleEnabled() { return smokeTrailParticleEnabled; }
+
+	public void setSmokeTrailParticleType(Particle smokeTrailParticleType) {
+		this.smokeTrailParticleType = smokeTrailParticleType;
+	}
+
+	public Particle getSmokeTrailParticleType() { return smokeTrailParticleType; }
+
+	public void setSmokeTrailParticleCount(int smokeTrailParticleCount) {
+		this.smokeTrailParticleCount = smokeTrailParticleCount;
+	}
+
+	public int getSmokeTrailParticleCount() { return smokeTrailParticleCount; }
+
+	public void setSmokeTrailParticleOffsetX(double smokeTrailParticleOffsetX) {
+		this.smokeTrailParticleOffsetX = smokeTrailParticleOffsetX;
+	}
+
+	public double getSmokeTrailParticleOffsetX() { return smokeTrailParticleOffsetX; }
+
+	public void setSmokeTrailParticleOffsetY(double smokeTrailParticleOffsetY) {
+		this.smokeTrailParticleOffsetY = smokeTrailParticleOffsetY;
+	}
+
+	public double getSmokeTrailParticleOffsetY() { return smokeTrailParticleOffsetY; }
+
+	public void setSmokeTrailParticleOffsetZ(double smokeTrailParticleOffsetZ) {
+		this.smokeTrailParticleOffsetZ = smokeTrailParticleOffsetZ;
+	}
+
+	public double getSmokeTrailParticleOffsetZ() { return smokeTrailParticleOffsetZ; }
+
+	public void setSmokeTrailParticleSpeed(double smokeTrailParticleSpeed) {
+		this.smokeTrailParticleSpeed = smokeTrailParticleSpeed;
+	}
+
+	public double getSmokeTrailParticleSpeed() { return smokeTrailParticleSpeed; }
+
 }
