@@ -128,7 +128,7 @@ public class ProjectileObserver {
 
             if(distance <= maxDist)
                 plugin.getFakeBlockHandler().imitatedSphere(p, loc, 1, Bukkit.createBlockData(liquid.getType()), FakeBlockType.WATER_SPLASH, 1.0);
-            
+
         }
         CannonsUtil.imitateSound(loc, sound, maxSoundDist, maxVol);
     }
