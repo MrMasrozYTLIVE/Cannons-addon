@@ -9,6 +9,7 @@ import at.pavlov.cannons.listener.Commands;
 import at.pavlov.cannons.utils.CannonsUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.Particle;
 import org.bukkit.block.Block;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.entity.Player;
@@ -162,7 +163,8 @@ public class FakeBlockHandler {
         BlockIterator iter = new BlockIterator(loc.getWorld(), loc.toVector(), direction, offset, length);
         while (iter.hasNext())
         {
-            sendBlockChangeToPlayer(player, iter.next().getLocation(), blockData, type, duration);
+            player.spawnParticle(Particle.CLOUD, loc, 1); //CCNet: spawn particles
+            //sendBlockChangeToPlayer(player, iter.next().getLocation(), blockData, type, duration);
         }
 
     }
