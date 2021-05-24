@@ -163,8 +163,8 @@ public class FakeBlockHandler {
         BlockIterator iter = new BlockIterator(loc.getWorld(), loc.toVector(), direction, offset, length);
         while (iter.hasNext())
         {
-            player.spawnParticle(Particle.CLOUD, loc, 1); //CCNet: spawn particles
-            //sendBlockChangeToPlayer(player, iter.next().getLocation(), blockData, type, duration);
+            //player.spawnParticle(Particle.SOUL_FIRE_FLAME, iter.next().getLocation(), 1, 0, 1, 0, 0); //CCNet: spawn particles
+            sendBlockChangeToPlayer(player, iter.next().getLocation(), blockData, type, duration);
         }
 
     }

@@ -44,7 +44,7 @@ public class SignListener implements Listener
 		if (event.getBlock() instanceof WallSign)
 		{
 			Block block = event.getBlock();
-			Sign s = (Sign) event.getBlock().getState();
+			Sign s = (Sign) event.getBlock().getState(false);
 			
 			//get block which is the sign attached to
 			BlockFace signFace = ((org.bukkit.material.Sign) s.getData()).getFacing();

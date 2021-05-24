@@ -381,8 +381,8 @@ public class FireCannon {
 
         //simple particle effects for close distance
         //loc.getWorld().createExplosion(loc, 0F, false);
-        loc.getWorld().spawnParticle(Particle.EXPLOSION_LARGE, loc, 1);
-        loc.getWorld().spawnParticle(Particle.FLASH , loc, 1);
+        loc.getWorld().spawnParticle(Particle.SMOKE_LARGE, loc, 1);
+        loc.getWorld().spawnParticle(Particle.FLASH, loc, 1, 0, 0, 0, 0, null, true);
         //fake blocks effects for far distance
         if (config.isImitatedFiringEffectEnabled()) {
             int maxSoundDist = config.getImitatedSoundMaximumDistance();

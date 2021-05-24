@@ -143,9 +143,9 @@ public class InventoryManagement
         {
             list = new ArrayList<Inventory>();
         }
-        if(block.getState() instanceof InventoryHolder)
+        if(block.getState(false) instanceof InventoryHolder)
         {
-            InventoryHolder ih = (InventoryHolder)block.getState();
+            InventoryHolder ih = (InventoryHolder) block.getState(false);
             list.add(ih.getInventory());
         }
         return list;

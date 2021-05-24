@@ -19,7 +19,7 @@ public class CannonSign
         if (block == null) return null;
 		if (!(block instanceof WallSign)) return null;
 
-		Sign sign = (Sign) block.getState();
+		Sign sign = (Sign) block.getState(false);
 		
 		return sign.getLine(line);
 	}

@@ -246,7 +246,6 @@ public class PlayerListener implements Listener
     public void RedstoneEvent(BlockRedstoneEvent event)
     {
         Block block = event.getBlock();
-        if (block == null) return;
 
         // ##########  redstone torch fire
         // off because it turn form off to on

@@ -882,7 +882,7 @@ public class Cannon
             //if that block is not loaded
             if (wBlock == null) return;
 
-            if (wBlock.getState() instanceof Attachable)
+            if (wBlock.getState(false) instanceof Attachable)
             {
                 //System.out.println("hide " + wBlock.getType());
                 wBlock.setType(Material.AIR);
@@ -1581,7 +1581,7 @@ public class Cannon
      */
     private void updateSign(Block block)
     {
-        Sign sign = (Sign) block.getState();
+        Sign sign = (Sign) block.getState(false);
         if (isValid)
         {
             // Cannon name in the first line
