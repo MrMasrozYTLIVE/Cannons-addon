@@ -2,12 +2,13 @@ package at.pavlov.cannons.projectile;
 
 import at.pavlov.cannons.Enum.ProjectileCause;
 import at.pavlov.cannons.container.MovingObject;
-import org.apache.commons.lang.Validate;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.LivingEntity;
+import org.bukkit.projectiles.ProjectileSource;
 import org.bukkit.util.Vector;
 
 import java.util.UUID;
@@ -42,7 +43,7 @@ public class FlyingProjectile
 
 	public FlyingProjectile(Projectile projectile, org.bukkit.entity.Projectile projectile_entity, UUID shooterUID, org.bukkit.projectiles.ProjectileSource source, Location playerLoc, UUID cannonId, ProjectileCause projectileCause)
 	{
-        Validate.notNull(shooterUID, "shooterUID for the projectile can't be null");
+        //Validate.notNull(shooterUID, "shooterUID for the projectile can't be null");
         this.entityUID = projectile_entity.getUniqueId();
         this.worldUID = projectile_entity.getWorld().getUID();
 
@@ -52,7 +53,8 @@ public class FlyingProjectile
         this.shooterUID = shooterUID;
         this.playerlocation = playerLoc;
         this.source = source;
-        projectile_entity.setShooter(source);
+        if (source != null)
+            projectile_entity.setShooter(source);
         this.projectileCause = projectileCause;
 
 		this.spawnTime = System.currentTimeMillis();
