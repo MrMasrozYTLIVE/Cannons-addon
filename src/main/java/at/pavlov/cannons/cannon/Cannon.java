@@ -83,6 +83,8 @@ public class Cannon
     // sentry aiming angles the cannon tries to reach
     private double aimingPitch;
     private double aimingYaw;
+    // is the cannon aiming at the given direction
+    private boolean aimingFinished;
 
     // tracking entity
     private UUID sentryEntity;
@@ -154,6 +156,9 @@ public class Cannon
         this.cannonName = null;
         // ignore if there is no fee
         this.paid = design.getEconomyBuildingCost() <= 0;
+        // set owner in the whitelist
+        if (design.getEconomyBuildingCost() <= 0)
+            whitelist.add(owner);
 
         //the cannon is not moving
         this.velocity = new Vector(0, 0, 0);
@@ -168,6 +173,7 @@ public class Cannon
 
         this.aimingPitch = 0.0;
         this.aimingYaw = 0.0;
+        this.aimingFinished = false;
 
         this.lastPlayerSpreadMultiplier = 1.0;
 
@@ -2536,6 +2542,10 @@ public class Cannon
     }
 
     public void removeWhitelistPlayer(UUID playerUID){
+        if (playerUID == owner) {
+            Cannons.getPlugin().logDebug("can't remove Owner from Whitelist");
+            return;
+        }
         setLastWhitelisted(playerUID);
         whitelist.remove(playerUID);
         this.hasWhitelistUpdated();
@@ -2544,6 +2554,13 @@ public class Cannon
     public boolean isWhitelisted(UUID playerUID){
         return whitelist.contains(playerUID);
     }
+
+    /**
+     * returns true if player is allows to operated a cannon (whitelisted or owner)
+     * @param playerUID player ID to test
+     * @return
+     */
+    public boolean isOperator(UUID playerUID) {return (isWhitelisted(playerUID) || playerUID == owner);}
 
     public UUID getLastWhitelisted() {
         return lastWhitelisted;
@@ -2661,5 +2678,13 @@ public class Cannon
 
     public void setWhitelistUpdated(boolean whitelistUpdated) {
         this.whitelistUpdated = whitelistUpdated;
+    }
+
+    public boolean isAimingFinished() {
+        return aimingFinished;
+    }
+
+    public void setAimingFinished(boolean aimingFinished) {
+        this.aimingFinished = aimingFinished;
     }
 }

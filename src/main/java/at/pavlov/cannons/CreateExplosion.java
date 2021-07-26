@@ -906,10 +906,6 @@ public class CreateExplosion {
 	}
     }
 
-    private void summonEntities() {
-
-    }
-
     private void fireEntityDeathEvent(FlyingProjectile cannonball) {
 	LinkedList<LivingEntity> lEntities = new LinkedList<>();
 	// check which entities are affected by the event
@@ -1090,7 +1086,7 @@ public class CreateExplosion {
      *            the flying projectile
      */
     private boolean deflectProjectile(FlyingProjectile cannonball) {
-	// todo
+	// todo deflect projectiles
 	// if (!cannonball.getProjectile().isSpawnEnabled())
 	// return;
 

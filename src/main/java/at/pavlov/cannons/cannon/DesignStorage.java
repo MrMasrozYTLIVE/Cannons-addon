@@ -219,6 +219,7 @@ public class DesignStorage
 		// timings
 		cannonDesign.setBlastConfusion(cannonDesignConfig.getDouble("timings.blastConfusion", 5.0));
 		cannonDesign.setFuseBurnTime(cannonDesignConfig.getDouble("timings.fuseBurnTime", 1.0));
+		cannonDesign.setFuseBurnTimeRandomness(cannonDesignConfig.getDouble("timings.fuseBurnTimeRandomness", 0.0));
 		cannonDesign.setBarrelCooldownTime(cannonDesignConfig.getDouble("timings.barrelCooldownTime", 1.0));
 		cannonDesign.setLoadTime(cannonDesignConfig.getDouble("timings.loadTime", 3.0));
 
@@ -251,6 +252,10 @@ public class DesignStorage
 		cannonDesign.setSentrySpread(cannonDesignConfig.getDouble("sentry.spread", 0.5));
         cannonDesign.setSentryUpdateTime((int) (cannonDesignConfig.getDouble("sentry.update", 1.0) * 1000.0));
         cannonDesign.setSentrySwapTime((int) (cannonDesignConfig.getDouble("sentry.swapTime", 10.0)*1000.0));
+
+        //linkCannons
+		cannonDesign.setLinkCannonsEnabled(cannonDesignConfig.getBoolean("linkCannons.enabled", false));
+		cannonDesign.setLinkCannonsDistance(cannonDesignConfig.getInt("linkCannons.distance", 0));
 
         //heatManagement
         cannonDesign.setHeatManagementEnabled(cannonDesignConfig.getBoolean("heatManagement.enabled", false));

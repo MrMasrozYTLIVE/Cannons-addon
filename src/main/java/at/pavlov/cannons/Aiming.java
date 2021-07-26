@@ -185,6 +185,9 @@ public class Aiming {
             if (player.isSneaking())
             {
                 angles = getGunAngle(cannon, player.getLocation().getYaw(), player.getLocation().getPitch());
+                // check if cannon is aiming on the target. True if both angles are identical smaller than one angle step
+				cannon.setAimingFinished(Math.abs(angles.getHorizontal())<design.getAngleStepSize() && Math.abs(angles.getVertical())<design.getAngleStepSize());
+				// combine both vertical and horizontal message
                 combine = true;
             }
             else
@@ -252,8 +255,6 @@ public class Aiming {
 		
 		//display message only if the angle has changed
 		if (hasChanged) {
-
-            //player.getWorld().playSound(cannon.getMuzzle(), Sound.IRON_GOLEM_WALK, 1f, 0.5f);
             CannonsUtil.playSound(cannon.getMuzzle(),design.getSoundAdjust());
             //predict impact marker
             updateLastAimed(cannon);
@@ -481,7 +482,19 @@ public class Aiming {
     			// autoaming or fineadjusting
     			if (distanceCheck(player, cannon) && player.isOnline() && cannon.isValid() && !(cannon.getCannonDesign().isSentry() && cannon.isSentryAutomatic()))
         		{
+
                     MessageEnum message = updateAngle(player, cannon, null, InteractAction.adjustAutoaim);
+
+					// todo link multiple cannons
+					// link Cannons
+					if (cannon.getCannonDesign().isLinkCannonsEnabled()) {
+						int d = cannon.getCannonDesign().getLinkCannonsDistance() * 2;
+						for (Cannon fcannon : CannonManager.getCannonsInBox(cannon.getLocation(), d, d, d)) {
+							// if the design is the same and the player is allowed to used the cannon
+							if (fcannon.getCannonDesign().equals(cannon.getCannonDesign()) && (!cannon.getCannonDesign().isAccessForOwnerOnly() || fcannon.getOwner() == player.getUniqueId()))
+								updateAngle(player, fcannon, null, InteractAction.adjustAutoaim);
+						}
+					}
                     userMessages.sendMessage(message, player, cannon);
         		}		
         		else

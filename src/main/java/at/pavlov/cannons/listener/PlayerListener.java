@@ -596,6 +596,15 @@ public class PlayerListener implements Listener
                 MessageEnum message = cannon.useRamRod(player);
                 userMessages.sendMessage(message, player, cannon);
 
+                // todo clean multiple cannons in the vicinity
+                if (design.isLinkCannonsEnabled() ) {
+                    int d = design.getLinkCannonsDistance() * 2;
+                    for (Cannon fcannon : CannonManager.getCannonsInBox(cannon.getLocation(), d, d, d)) {
+                        if (fcannon.getCannonDesign().equals(cannon.getCannonDesign()) &&  (!cannon.getCannonDesign().isAccessForOwnerOnly() || fcannon.getOwner() == player.getUniqueId()))
+                        fcannon.useRamRod(player);
+                    }
+                }
+
                 //this will directly fire the cannon after it was loaded
                 if (!player.isSneaking() && design.isFireAfterLoading() && cannon.isLoaded() && cannon.isProjectilePushed())
                     fireCannon.playerFiring(cannon, player, InteractAction.fireAfterLoading);

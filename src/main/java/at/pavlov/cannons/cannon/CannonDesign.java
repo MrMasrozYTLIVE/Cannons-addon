@@ -50,6 +50,7 @@ public class CannonDesign
 	//timings
 	private double blastConfusion;
 	private double fuseBurnTime;
+	private double fuseBurnTimeRandomness;
     private double barrelCooldownTime;
 	private double loadTime;
 	
@@ -82,6 +83,10 @@ public class CannonDesign
 	private double sentrySpread;
 	private int sentryUpdateTime;				//in ms
     private int sentrySwapTime;				    //in ms
+
+	//linkCannons
+	private boolean linkCannonsEnabled;
+	private int linkCannonsDistance;
 
     //heatManagment
     private boolean heatManagementEnabled;
@@ -1605,5 +1610,29 @@ public class CannonDesign
 
 	public void setAutoloadChargeWhenLoadingProjectile(boolean autoloadChargeWhenLoadingProjectile) {
 		this.autoloadChargeWhenLoadingProjectile = autoloadChargeWhenLoadingProjectile;
+	}
+
+	public double getFuseBurnTimeRandomness() {
+		return fuseBurnTimeRandomness;
+	}
+
+	public void setFuseBurnTimeRandomness(double fuseBurnTimeRandomness) {
+		this.fuseBurnTimeRandomness = fuseBurnTimeRandomness;
+	}
+
+	public boolean isLinkCannonsEnabled() {
+		return linkCannonsEnabled;
+	}
+
+	public void setLinkCannonsEnabled(boolean linkCannonsEnabled) {
+		this.linkCannonsEnabled = linkCannonsEnabled;
+	}
+
+	public int getLinkCannonsDistance() {
+		return linkCannonsDistance;
+	}
+
+	public void setLinkCannonsDistance(int linkCannonsDistance) {
+		this.linkCannonsDistance = linkCannonsDistance;
 	}
 }
