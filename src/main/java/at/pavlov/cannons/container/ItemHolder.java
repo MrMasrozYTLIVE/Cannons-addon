@@ -1,5 +1,6 @@
 package at.pavlov.cannons.container;
 
+import net.kyori.adventure.text.serializer.plain.PlainComponentSerializer;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -285,6 +286,7 @@ public class ItemHolder
 
 	private static String getFriendlyName(ItemStack itemStack, boolean checkDisplayName) {
 		if (itemStack == null || itemStack.getType() == Material.AIR) return "Air";
+		/*
 		try {
 			if (craftItemStackClass == null)
 				craftItemStackClass = Class.forName(OBC_PREFIX + ".inventory.CraftItemStack");
@@ -315,6 +317,16 @@ public class ItemHolder
 			return itemName != null ? itemName.toString() : capitalizeFully(itemStack.getType().name().replace("_", " ").toLowerCase());
 		} catch (Exception ex) {
 			ex.printStackTrace();
+		}
+		*/
+		if (checkDisplayName) {
+			ItemMeta meta = itemStack.getItemMeta();
+			if (!meta.hasDisplayName()) {
+				return capitalizeFully(itemStack.getType().name().replace("_", " ").toLowerCase());
+			}
+			else {
+				return capitalizeFully(PlainComponentSerializer.plain().serialize(meta.displayName()).replace("_", " ").toLowerCase());
+			}
 		}
 		return capitalizeFully(itemStack.getType().name().replace("_", " ").toLowerCase());
 	}
