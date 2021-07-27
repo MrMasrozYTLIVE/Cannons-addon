@@ -497,7 +497,7 @@ public class CannonManager
     public Cannon getCannon(Location cannonBlock, UUID owner, boolean silent)
     {
         // is this block material used for a cannon design
-        if (cannonBlock.getBlock() == null || !plugin.getDesignStorage().isCannonBlockMaterial(cannonBlock.getBlock().getBlockData().getMaterial()))
+        if (cannonBlock.getBlock() == null || !plugin.getDesignStorage().isCannonBlockMaterial(cannonBlock.getBlock().getType()))
             return null;
 
         long startTime = System.nanoTime();
