@@ -90,6 +90,16 @@ public class SimpleBlock
 	}
 
 	/**
+	 * return true if Materials match
+	 * @param block block to compare to
+	 * @return true if both block match
+	 */
+	public boolean compareMaterial(Block block)
+	{
+		return block.getType().equals(this.blockData.getMaterial());
+	}
+
+	/**
 	 * compares material and facing
 	 * @param blockData block to compare to
 	 * @return true if both block match
@@ -99,6 +109,24 @@ public class SimpleBlock
 		if (!compareMaterial(blockData)) {
 			return false;
 		}
+		// compare facing and face
+		if (blockData instanceof Directional && this instanceof Directional){
+			return ((Directional) this).getFacing().equals(((Directional) blockData).getFacing());
+		}
+		return true;
+	}
+
+	/**
+	 * compares material and facing
+	 * @param block block to compare to
+	 * @return true if both block match
+	 */
+	public boolean compareMaterialAndFacing(Block block) {
+		// different materials
+		if (!compareMaterial(block)) {
+			return false;
+		}
+		BlockData blockData = block.getBlockData();
 		// compare facing and face
 		if (blockData instanceof Directional && this instanceof Directional){
 			return ((Directional) this).getFacing().equals(((Directional) blockData).getFacing());
