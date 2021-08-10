@@ -1205,7 +1205,7 @@ public class Aiming {
         for (int i=0;start.distance(predictor.getLoc()) < config.getImitatedPredictorDistance() && i < config.getImitatedPredictorIterations(); i++)
         {
         	// Ran into an unloaded chunk, terminate further iterations
-			if (!predictor.getLocation().getChunk().isLoaded()) {
+			if (!predictor.getLocation().isChunkLoaded()) {
 				return null;
 			}
 			//see if we hit something
