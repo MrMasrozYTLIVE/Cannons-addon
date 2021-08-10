@@ -1204,8 +1204,12 @@ public class Aiming {
         //make a few iterations until we hit something
         for (int i=0;start.distance(predictor.getLoc()) < config.getImitatedPredictorDistance() && i < config.getImitatedPredictorIterations(); i++)
         {
-            //see if we hit something
-            Block block = predictor.getLocation().getBlock();
+        	// Ran into an unloaded chunk, terminate further iterations
+			if (!predictor.getLocation().getChunk().isLoaded()) {
+				return null;
+			}
+			//see if we hit something
+			Block block = predictor.getLocation().getBlock();
             if (!block.isEmpty())
             {
                 predictor.revertProjectileLocation(false);
