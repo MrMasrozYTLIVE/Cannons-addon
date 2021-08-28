@@ -369,7 +369,9 @@ public class UserMessages {
 		{
 			//replace the number of cannons
             message = message.replace("PLAYER", player.getName());
-			message = message.replace("LIMIT", Integer.toString(plugin.getCannonManager().getNumberOfCannons(player.getUniqueId())));
+            if (message.contains("LIMIT")) { // CCNet: getting the number of cannons is expensive; only do it if necessary
+				message = message.replace("LIMIT", Integer.toString(plugin.getCannonManager().getNumberOfCannons(player.getUniqueId())));
+			}
 		}
 		return message;
 	}
