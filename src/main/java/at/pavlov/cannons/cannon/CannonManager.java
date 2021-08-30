@@ -468,7 +468,7 @@ public class CannonManager
     {
         for (Cannon cannon : cannonList.values())
         {
-            if (/*:*/loc.toVector().distance(cannon.getOffset()) <= 32 /*To make code faster on servers with a lot of cannons */ && cannon.isCannonBlock(loc.getBlock()))
+            if (/*:*/loc.toVector().distanceSquared(cannon.getOffset()) <= 1024 /*To make code faster on servers with a lot of cannons */ && cannon.isCannonBlock(loc.getBlock()))
             {
                 return cannon;
             }
