@@ -26,6 +26,7 @@ import org.bukkit.event.block.Action;
 import org.bukkit.scoreboard.Team;
 import org.bukkit.util.Vector;
 
+import java.text.DecimalFormat;
 import java.util.*;
 
 
@@ -94,11 +95,24 @@ public class Aiming {
         {
             public void run()
             {
-                //long startTime = System.nanoTime();
+                long startTime = System.nanoTime();
                 updateAimingMode();
+                double time = (System.nanoTime() - startTime)/1000000.0;
+                if (time > 10.)
+					plugin.logDebug("Time update aiming: " + new DecimalFormat("0.00").format(time)+ "ms");
+
+				startTime = System.nanoTime();
                 updateImpactPredictor();
+				time = (System.nanoTime() - startTime)/1000000.0;
+				if (time > 10.)
+					plugin.logDebug("Time updateImpactPredictor: " + new DecimalFormat("0.00").format(time) + "ms");
+
+				startTime = System.nanoTime();
                 updateSentryMode();
-                //plugin.logDebug("Time update aiming: " + new DecimalFormat("0.00").format((System.nanoTime() - startTime)/1000000.0) + "ms");
+				time = (System.nanoTime() - startTime)/1000000.0;
+				if (time > 10.)
+					plugin.logDebug("Time updateSentryMode: " + new DecimalFormat("0.00").format(time) + "ms");
+
             }
         }, 1L, 1L);
     }
@@ -435,6 +449,9 @@ public class Aiming {
         if (cannon == null)
             return true;
 
+        if (!player.getWorld().equals(cannon.getWorldBukkit()))
+        	return false;
+
         //check if player if far away from the cannon
         CannonDesign design = plugin.getCannonDesign(cannon);
 		//go to trigger location
@@ -448,7 +465,7 @@ public class Aiming {
             return false;
         }
 
-        return player.getLocation().distance(locCannon) <= 4;
+        return player.getLocation().distance(locCannon) <= config.getToolAutoaimRange();
     }
 
 
@@ -479,19 +496,24 @@ public class Aiming {
     		// only update if since the last update some ticks have past (updateSpeed is in ticks = 50ms)
     		if (System.currentTimeMillis() >= cannon.getLastAimed() + cannon.getCannonDesign().getAngleUpdateSpeed())
     		{
+    			boolean playerInRange = distanceCheck(player, cannon);
+    			// reset diasble aiming mode timer if player is close to the cannon
+				if(playerInRange)
+					cannon.setTimestampAimingMode(System.currentTimeMillis());
+
     			// autoaming or fineadjusting
-    			if (distanceCheck(player, cannon) && player.isOnline() && cannon.isValid() && !(cannon.getCannonDesign().isSentry() && cannon.isSentryAutomatic()))
+    			if (playerInRange && player.isOnline() && cannon.isValid() && !(cannon.getCannonDesign().isSentry() && cannon.isSentryAutomatic()))
         		{
 
                     MessageEnum message = updateAngle(player, cannon, null, InteractAction.adjustAutoaim);
 
-					// todo link multiple cannons
-					// link Cannons
+					// todo updated cannon angles for linked cannons
+					// linked Cannons
 					if (cannon.getCannonDesign().isLinkCannonsEnabled()) {
 						int d = cannon.getCannonDesign().getLinkCannonsDistance() * 2;
 						for (Cannon fcannon : CannonManager.getCannonsInBox(cannon.getLocation(), d, d, d)) {
 							// if the design is the same and the player is allowed to used the cannon
-							if (fcannon.getCannonDesign().equals(cannon.getCannonDesign()) && (!cannon.getCannonDesign().isAccessForOwnerOnly() || fcannon.getOwner() == player.getUniqueId()))
+							if (fcannon.isCannonOperator(player) && fcannon.getCannonDesign().equals(cannon.getCannonDesign()) && (!cannon.getCannonDesign().isAccessForOwnerOnly() || fcannon.getOwner() == player.getUniqueId()))
 								updateAngle(player, fcannon, null, InteractAction.adjustAutoaim);
 						}
 					}
@@ -499,9 +521,12 @@ public class Aiming {
         		}		
         		else
         		{
-        			//leave aiming Mode
-        			MessageEnum message = disableAimingMode(player, cannon);
-                    userMessages.sendMessage(message, player, cannon);
+        			//leave aiming Mode but wait a second first
+					if ((System.currentTimeMillis() - cannon.getTimestampAimingMode()) > 1000) {
+						userMessages.sendMessage(MessageEnum.AimingModeTooFarAway, player);
+						MessageEnum message = disableAimingMode(player);
+						userMessages.sendMessage(message, player, cannon);
+					}
         		}
     		}	
     	}
@@ -516,6 +541,12 @@ public class Aiming {
                 iter.remove();
                 continue;
             }
+
+            //todo test if chunk loading is caused by this function
+            if (!cannon.isChunkLoaded()){
+            	plugin.logDebug("Chunk not loaded " + cannon.getCannonName() + " sentry function deactivated");
+            	continue;
+			}
 
 			// ignore cannons which are not in sentry mode
 			if (!cannon.isSentryAutomatic() || !cannon.isPaid())
@@ -926,7 +957,7 @@ public class Aiming {
             else
             {
                 //turn off the aiming mode
-                MessageEnum message = disableAimingMode(player, cannon);
+                MessageEnum message = disableAimingMode(player);
                 userMessages.sendMessage(message, player, cannon);
             }
         }
@@ -940,6 +971,10 @@ public class Aiming {
                 if (distanceCheck(player, cannon))
                 {
                     MessageEnum message = enableAimingMode(player, cannon);
+                    if (message == MessageEnum.AimingModeEnabled)
+						CannonsUtil.playSound(cannon.getMuzzle(), cannon.getCannonDesign().getSoundEnableAimingMode());
+                    else
+						CannonsUtil.playErrorSound(cannon.getMuzzle());
                     userMessages.sendMessage(message, player, cannon);
                 }
                 else
@@ -958,7 +993,7 @@ public class Aiming {
 
     /**
      * enable the aiming mode
-     * @param player player how operates the cannon
+     * @param player player who operates the cannon
      * @param cannon the cannon in aiming mode
      * @return message for the user
      */
@@ -976,8 +1011,19 @@ public class Aiming {
 
         inAimingMode.put(player.getUniqueId(), cannon.getUID());
 
-		cannon.addObserver(player, false);
-		CannonsUtil.playSound(player.getEyeLocation(), cannon.getCannonDesign().getSoundEnableAimingMode());
+		MessageEnum message = cannon.addCannonOperator(player, true);
+		if (message != MessageEnum.AimingModeEnabled)
+			return message;
+
+		//todo add player from all cannons as cannon operator
+		if (cannon.getCannonDesign().isLinkCannonsEnabled() ) {
+			int d = cannon.getCannonDesign().getLinkCannonsDistance() * 2;
+			for (Cannon fcannon : CannonManager.getCannonsInBox(cannon.getLocation(), d, d, d)) {
+				if (fcannon.getCannonDesign().equals(cannon.getCannonDesign()))
+					fcannon.addCannonOperator(player, false);
+			}
+		}
+
 
         return MessageEnum.AimingModeEnabled;
 
@@ -1016,7 +1062,17 @@ public class Aiming {
 
             if (cannon!=null)
             {
-                cannon.removeObserver(player);
+                cannon.removeCannonOperator();
+
+				// todo remove player from all cannons as cannon operator
+				if (cannon.getCannonDesign().isLinkCannonsEnabled() ) {
+					int d = cannon.getCannonDesign().getLinkCannonsDistance() * 2;
+					for (Cannon fcannon : CannonManager.getCannonsInBox(cannon.getLocation(), d, d, d)) {
+						if (fcannon.getCannonDesign().equals(cannon.getCannonDesign()))
+							cannon.removeCannonOperator();
+					}
+				}
+
             }
 
             return MessageEnum.AimingModeDisabled;
