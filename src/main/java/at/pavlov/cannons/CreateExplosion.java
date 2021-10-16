@@ -790,6 +790,10 @@ public class CreateExplosion {
      */
     public void detonate(FlyingProjectile cannonball, org.bukkit.entity.Projectile projectile_entity) {
 	this.plugin.logDebug("detonate cannonball");
+	if (cannonball.hasDetonated()) {
+		return;
+	}
+	cannonball.setHasDetonated(true);
 
 	Projectile projectile = cannonball.getProjectile().clone();
 	Player player = Bukkit.getPlayer(cannonball.getShooterUID());

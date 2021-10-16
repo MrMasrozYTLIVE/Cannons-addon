@@ -39,7 +39,7 @@ public class FlyingProjectile
     private ProjectileCause projectileCause;
 
     private MovingObject predictor;
-    private boolean hasDetonated;
+    private boolean hasDetonated = false;
 
 
 	public FlyingProjectile(Projectile projectile, org.bukkit.entity.Projectile projectile_entity, UUID shooterUID, org.bukkit.projectiles.ProjectileSource source, Location playerLoc, UUID cannonId, ProjectileCause projectileCause)

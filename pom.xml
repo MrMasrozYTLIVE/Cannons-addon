@@ -47,10 +47,6 @@
             <url>https://papermc.io/repo/repository/maven-public/</url>
         </repository>
         <repository>
-            <id>papermc</id>
-            <url>https://papermc.io/repo/repository/maven-public/</url>
-        </repository>
-        <repository>
             <id>fawe-repo</id>
             <url>https://ci.athion.net/job/FastAsyncWorldEdit-1.13/ws/mvn</url>
         </repository>
