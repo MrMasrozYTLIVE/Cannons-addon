@@ -39,6 +39,7 @@ public class FlyingProjectile
     private ProjectileCause projectileCause;
 
     private MovingObject predictor;
+    private boolean hasDetonated;
 
 
 	public FlyingProjectile(Projectile projectile, org.bukkit.entity.Projectile projectile_entity, UUID shooterUID, org.bukkit.projectiles.ProjectileSource source, Location playerLoc, UUID cannonId, ProjectileCause projectileCause)
@@ -322,5 +323,13 @@ public class FlyingProjectile
 
     public void setImpactBlock(Location impactBlock) {
         this.impactBlock = impactBlock;
+    }
+
+    public boolean hasDetonated() {
+        return this.hasDetonated;
+    }
+
+    public void setHasDetonated(boolean detonated) {
+        this.hasDetonated = detonated;
     }
 }

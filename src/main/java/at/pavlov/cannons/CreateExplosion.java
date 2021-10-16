@@ -780,7 +780,6 @@ public class CreateExplosion {
 	this.addAffectedEntity(entity);
 	// explode the cannonball
 	this.detonate(cannonball, projectile_entity);
-
     }
 
     /**

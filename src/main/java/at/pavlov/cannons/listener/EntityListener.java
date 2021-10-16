@@ -48,6 +48,7 @@ public class EntityListener implements Listener
 			Projectile p = (Projectile) er;
 			plugin.getProjectileManager().directHitProjectile(p, event.getEntity());
 		}
+
 	}
 
     /**
