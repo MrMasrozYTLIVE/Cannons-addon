@@ -379,7 +379,7 @@ public class CannonManager
         for (Cannon cannon : getCannonList().values())
         {
             if (cannon.getWorld().equals(center.getWorld().getUID())) {
-                Location newLoc = cannon.getCannonDesign().getBarrelBlocks(cannon).get(0);
+                Location newLoc = cannon.getOffset().toLocation(center.getWorld());
                 Vector box = newLoc.subtract(center).toVector();
                 if (cannon.getWorld().equals(center.getWorld().getUID()) && Math.abs(box.getX()) < lengthX / 2 && Math.abs(box.getY()) < lengthY / 2 && Math.abs(box.getZ()) < lengthZ / 2)
                     newCannonList.add(cannon);
