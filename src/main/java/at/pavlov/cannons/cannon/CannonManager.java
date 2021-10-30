@@ -468,10 +468,10 @@ public class CannonManager
 
     private Cannon getCannonFromLocation(Location location) {
         try {
-            return cannonCache.get(location, () -> getCannonFromLocation(location));
+            return cannonCache.get(location, () -> getCannonFromStorage(location));
         }
         catch (ExecutionException ex) { // shouldn't throw, but add a backup anyways
-            return getCannonFromLocation(location);
+            return getCannonFromStorage(location);
         }
     }
 
