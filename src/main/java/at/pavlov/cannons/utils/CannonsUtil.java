@@ -230,9 +230,9 @@ public class CannonsUtil
 	 * @param block
 	 * @return
 	 */
-	public static ArrayList<Block> HorizontalSurroundingBlocks(Block block)
+	public static HashSet<Block> HorizontalSurroundingBlocks(Block block)
 	{
-		ArrayList<Block> Blocks = new ArrayList<Block>();
+		HashSet<Block> Blocks = new HashSet<>();
 
 		Blocks.add(block.getRelative(BlockFace.SOUTH));
 		Blocks.add(block.getRelative(BlockFace.WEST));

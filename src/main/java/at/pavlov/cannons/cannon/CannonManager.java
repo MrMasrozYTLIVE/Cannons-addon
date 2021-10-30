@@ -3,6 +3,8 @@ package at.pavlov.cannons.cannon;
 import java.text.DecimalFormat;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
 
 import at.pavlov.cannons.Cannons;
 import at.pavlov.cannons.Enum.BreakCause;
@@ -12,6 +14,9 @@ import at.pavlov.cannons.event.CannonDestroyedEvent;
 import at.pavlov.cannons.utils.CannonsUtil;
 import at.pavlov.cannons.utils.DelayedTask;
 import at.pavlov.cannons.utils.RemoveTaskWrapper;
+import com.google.common.cache.Cache;
+import com.google.common.cache.CacheBuilder;
+import com.google.common.cache.CacheLoader;
 import org.apache.commons.lang.Validate;
 import org.bukkit.*;
 import org.bukkit.block.BlockFace;
@@ -30,7 +35,10 @@ public class CannonManager
 {
     private static final ConcurrentHashMap<UUID, Cannon> cannonList = new ConcurrentHashMap<UUID, Cannon>();
     private static final ConcurrentHashMap<String, UUID> cannonNameMap = new ConcurrentHashMap<String, UUID>();
-
+    private static final Cache<Location, Cannon> cannonCache = CacheBuilder.newBuilder()
+            .expireAfterWrite(10, TimeUnit.SECONDS)
+            .maximumSize(1024)
+            .build();
 
     private final Cannons plugin;
     private final UserMessages userMessages;
@@ -458,6 +466,15 @@ public class CannonManager
         return null;
     }
 
+    private Cannon getCannonFromLocation(Location location) {
+        try {
+            return cannonCache.get(location, () -> getCannonFromLocation(location));
+        }
+        catch (ExecutionException ex) { // shouldn't throw, but add a backup anyways
+            return getCannonFromLocation(location);
+        }
+    }
+
     /**
      * Searches the storage if there is already a cannonblock on this location
      * and returns the cannon
@@ -469,7 +486,7 @@ public class CannonManager
         Vector locVector = loc.toVector();
         for (Cannon cannon : cannonList.values())
         {
-            if (/*:*/locVector.distanceSquared(cannon.getOffset()) <= 1024 /*To make code faster on servers with a lot of cannons */ && cannon.isCannonBlock(loc.getBlock()))
+            if (locVector.distanceSquared(cannon.getOffset()) <= 1024 /*To make code faster on servers with a lot of cannons */ && cannon.isCannonBlock(loc.getBlock()))
             {
                 return cannon;
             }
@@ -498,7 +515,7 @@ public class CannonManager
     public Cannon getCannon(Location cannonBlock, UUID owner, boolean silent)
     {
         // is this block material used for a cannon design
-        if (cannonBlock.getBlock() == null || !plugin.getDesignStorage().isCannonBlockMaterial(cannonBlock.getBlock().getType()))
+        if (!plugin.getDesignStorage().isCannonBlockMaterial(cannonBlock.getBlock().getType()))
             return null;
 
         long startTime = System.nanoTime();
@@ -526,7 +543,7 @@ public class CannonManager
         else
         {
             // this cannon has no sign, so look in the database if there is something
-            Cannon storageCannon =  getCannonFromStorage(cannonBlock);
+            Cannon storageCannon =  getCannonFromLocation(cannonBlock);
             if (storageCannon != null)
             {
                 //try to find something in the storage

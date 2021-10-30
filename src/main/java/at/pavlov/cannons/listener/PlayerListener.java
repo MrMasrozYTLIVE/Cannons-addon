@@ -1,9 +1,22 @@
 package at.pavlov.cannons.listener;
 
+import at.pavlov.cannons.Aiming;
+import at.pavlov.cannons.Cannons;
 import at.pavlov.cannons.Enum.InteractAction;
-import at.pavlov.cannons.container.DeathCause;
+import at.pavlov.cannons.Enum.MessageEnum;
+import at.pavlov.cannons.FireCannon;
+import at.pavlov.cannons.cannon.Cannon;
+import at.pavlov.cannons.cannon.CannonDesign;
+import at.pavlov.cannons.cannon.CannonManager;
+import at.pavlov.cannons.config.Config;
+import at.pavlov.cannons.config.UserMessages;
 import at.pavlov.cannons.projectile.FlyingProjectile;
-import org.bukkit.*;
+import at.pavlov.cannons.projectile.Projectile;
+import at.pavlov.cannons.utils.CannonsUtil;
+import org.bukkit.Bukkit;
+import org.bukkit.Effect;
+import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.data.type.WallSign;
@@ -17,26 +30,12 @@ import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerBucketEmptyEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
-
-import at.pavlov.cannons.Aiming;
-import at.pavlov.cannons.cannon.CannonManager;
-import at.pavlov.cannons.Cannons;
-import at.pavlov.cannons.FireCannon;
-import at.pavlov.cannons.cannon.Cannon;
-import at.pavlov.cannons.cannon.CannonDesign;
-import at.pavlov.cannons.config.Config;
-import at.pavlov.cannons.Enum.MessageEnum;
-import at.pavlov.cannons.config.UserMessages;
-import at.pavlov.cannons.projectile.Projectile;
-import at.pavlov.cannons.utils.CannonsUtil;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.util.BlockIterator;
 
-import java.util.HashSet;
-import java.util.Set;
 import java.util.UUID;
 
 public class PlayerListener implements Listener
@@ -246,10 +245,11 @@ public class PlayerListener implements Listener
     public void RedstoneEvent(BlockRedstoneEvent event)
     {
         Block block = event.getBlock();
+        Material material = block.getType();
 
         // ##########  redstone torch fire
         // off because it turn form off to on
-        if ((block.getType() == Material.REDSTONE_TORCH || block.getType() == Material.REDSTONE_WALL_TORCH) && event.getNewCurrent() > event.getOldCurrent())
+        if (event.getNewCurrent() > event.getOldCurrent() && (material == Material.REDSTONE_TORCH || material == Material.REDSTONE_WALL_TORCH))
         {
             // go one block up and check this is a cannon
             Cannon cannon = cannonManager.getCannon(block.getRelative(BlockFace.UP).getLocation(), null);
@@ -266,7 +266,7 @@ public class PlayerListener implements Listener
         }
 
         // ##########  redstone wire fire
-        if (block.getType() == Material.REDSTONE_WIRE && event.getNewCurrent() > event.getOldCurrent())
+        else if (event.getNewCurrent() > event.getOldCurrent() && material == Material.REDSTONE_WIRE)
         {
             // check all block next to this if there is a cannon
             for (Block b : CannonsUtil.HorizontalSurroundingBlocks(block))
@@ -286,7 +286,7 @@ public class PlayerListener implements Listener
         }
 
         // ##########  redstone repeater and comparator fire
-        if ((block.getType() == Material.REPEATER || block.getType() == Material.COMPARATOR) && event.getNewCurrent() > event.getOldCurrent())
+        else if (event.getNewCurrent() > event.getOldCurrent() && (material == Material.REPEATER || material == Material.COMPARATOR))
         {
             // check all block next to this if there is a cannon
             for (Block b : CannonsUtil.HorizontalSurroundingBlocks(block))
@@ -307,7 +307,7 @@ public class PlayerListener implements Listener
 
 
         // ##########  fire with redstone trigger ######
-        Cannon cannon = cannonManager.getCannon(event.getBlock().getLocation(), null);
+        Cannon cannon = cannonManager.getCannon(block.getLocation(), null);
         if (cannon != null)
         {
             //check if this is a redstone trigger of the cannon (e.g. button)
