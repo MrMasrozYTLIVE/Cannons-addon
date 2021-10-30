@@ -73,7 +73,7 @@ public class SimpleBlock
 	{		
 		if (toVector().add(offset).equals(block.getLocation().toVector()))
 		{
-			if (compareMaterial(block.getBlockData()))
+			if (compareMaterial(block))
 				return true;
 		}
 		return false;
