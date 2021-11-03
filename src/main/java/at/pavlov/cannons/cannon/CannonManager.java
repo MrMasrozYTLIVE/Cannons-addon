@@ -36,7 +36,7 @@ public class CannonManager
     private static final ConcurrentHashMap<UUID, Cannon> cannonList = new ConcurrentHashMap<UUID, Cannon>();
     private static final ConcurrentHashMap<String, UUID> cannonNameMap = new ConcurrentHashMap<String, UUID>();
     private static final Cache<Location, Cannon> cannonCache = CacheBuilder.newBuilder()
-            .expireAfterWrite(10, TimeUnit.SECONDS)
+            .expireAfterWrite(20, TimeUnit.SECONDS)
             .maximumSize(1024)
             .build();
 
@@ -569,12 +569,12 @@ public class CannonManager
                 if (message == MessageEnum.CannonCreated && (cannon.getCannonDesign().isSignRequired() && !cannon.hasCannonSign()))
                     message = MessageEnum.ErrorMissingSign;
 
-                //CannonBeforeCreateEvent cbceEvent = new CannonBeforeCreateEvent(cannon, message, player.getUniqueId());
-                //Bukkit.getServer().getPluginManager().callEvent(cbceEvent);
+                CannonBeforeCreateEvent cbceEvent = new CannonBeforeCreateEvent(cannon, message, player.getUniqueId());
+                Bukkit.getServer().getPluginManager().callEvent(cbceEvent);
 
                 //add cannon to the list if everything was fine and return the cannon
-                //if (!cbceEvent.isCancelled() && cbceEvent.getMessage() != null && cbceEvent.getMessage() == MessageEnum.CannonCreated)
-                //{
+                if (!cbceEvent.isCancelled() && cbceEvent.getMessage() != null && cbceEvent.getMessage() == MessageEnum.CannonCreated)
+                {
                     plugin.logDebug("a new cannon was created by " + cannon.getOwner());
                     createCannon(cannon, true);
 
@@ -584,10 +584,10 @@ public class CannonManager
                         userMessages.sendMessage(message, owner, cannon);
                         CannonsUtil.playSound(cannon.getMuzzle(), cannon.getCannonDesign().getSoundCreate());
                     }
-                    //CannonAfterCreateEvent caceEvent = new CannonAfterCreateEvent(cannon, player.getUniqueId());
-                    //Bukkit.getServer().getPluginManager().callEvent(caceEvent);
-                //}
-                /*
+                    CannonAfterCreateEvent caceEvent = new CannonAfterCreateEvent(cannon, player.getUniqueId());
+                    Bukkit.getServer().getPluginManager().callEvent(caceEvent);
+                }
+
                 else
                 {
                     //send messages
@@ -601,7 +601,7 @@ public class CannonManager
                     plugin.logDebug("Creating a cannon event was canceled: " + message);
                     return null;
                 }
-                 */
+
             }
         }
 
