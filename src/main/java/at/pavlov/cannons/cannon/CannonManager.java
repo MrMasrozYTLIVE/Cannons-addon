@@ -470,7 +470,11 @@ public class CannonManager
         try {
             return cannonCache.get(location, () -> getCannonFromStorage(location));
         }
-        catch (ExecutionException ex) { // shouldn't throw, but add a backup anyways
+        // Throws if there was no cannon at the location (i.e. the cannon is null)
+        catch (CacheLoader.InvalidCacheLoadException ex) {
+            return null;
+        }
+        catch (ExecutionException ex) {
             return getCannonFromStorage(location);
         }
     }
