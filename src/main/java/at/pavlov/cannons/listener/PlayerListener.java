@@ -246,72 +246,69 @@ public class PlayerListener implements Listener
     {
         Block block = event.getBlock();
         Material material = block.getType();
+        Cannon cannon;
 
-        // ##########  redstone torch fire
-        // off because it turn form off to on
-        if (event.getNewCurrent() > event.getOldCurrent() && (material == Material.REDSTONE_TORCH || material == Material.REDSTONE_WALL_TORCH))
-        {
-            // go one block up and check this is a cannon
-            Cannon cannon = cannonManager.getCannon(block.getRelative(BlockFace.UP).getLocation(), null);
+        if (event.getNewCurrent() > event.getOldCurrent()) {
+            switch (material) {
+                // ##########  redstone torch fire
+                // off because it turn form off to on
+                case REDSTONE_TORCH:
+                case REDSTONE_WALL_TORCH:
+                    cannon = cannonManager.getCannon(block.getRelative(BlockFace.UP).getLocation(), null);
 
-            if (cannon != null)
-            {
-                // there is cannon next to the torch - check if the torch is
-                // place right
-                if (cannon.isRedstoneTorchInterface(block.getLocation()))
-                {
-                    MessageEnum message = fireCannon.redstoneFiring(cannon, InteractAction.fireRedstone);
-                }
-            }
-        }
-
-        // ##########  redstone wire fire
-        else if (event.getNewCurrent() > event.getOldCurrent() && material == Material.REDSTONE_WIRE)
-        {
-            // check all block next to this if there is a cannon
-            for (Block b : CannonsUtil.HorizontalSurroundingBlocks(block))
-            {
-                Cannon cannon = cannonManager.getCannon(b.getLocation(), null);
-                if (cannon != null)
-                {
-                    // there is cannon next to the wire - check if the wire
-                    // is place right
-                    if (cannon.isRedstoneWireInterface(block.getLocation()))
+                    if (cannon != null)
                     {
-                        MessageEnum message = fireCannon.redstoneFiring(cannon, InteractAction.fireRedstone);
+                        // there is cannon next to the torch - check if the torch is
+                        // place right
+                        if (cannon.isRedstoneTorchInterface(block.getLocation()))
+                        {
+                            MessageEnum message = fireCannon.redstoneFiring(cannon, InteractAction.fireRedstone);
+                        }
                     }
-                }
-
-            }
-        }
-
-        // ##########  redstone repeater and comparator fire
-        else if (event.getNewCurrent() > event.getOldCurrent() && (material == Material.REPEATER || material == Material.COMPARATOR))
-        {
-            // check all block next to this if there is a cannon
-            for (Block b : CannonsUtil.HorizontalSurroundingBlocks(block))
-            {
-                Cannon cannon = cannonManager.getCannon(b.getLocation(), null);
-                if (cannon != null)
-                {
-                    // there is cannon next to the wire - check if the wire
-                    // is place right
-                    if (cannon.isRedstoneRepeaterInterface(block.getLocation()))
+                    break;
+                case REDSTONE_WIRE:
+                    // check all block next to this if there is a cannon
+                    for (Block b : CannonsUtil.HorizontalSurroundingBlocks(block))
                     {
-                        MessageEnum message = fireCannon.redstoneFiring(cannon, InteractAction.fireRedstone);
-                    }
+                        cannon = cannonManager.getCannon(b.getLocation(), null);
+                        if (cannon != null)
+                        {
+                            // there is cannon next to the wire - check if the wire
+                            // is place right
+                            if (cannon.isRedstoneWireInterface(block.getLocation()))
+                            {
+                                MessageEnum message = fireCannon.redstoneFiring(cannon, InteractAction.fireRedstone);
+                            }
+                        }
 
-                }
+                    }
+                    break;
+                case REPEATER:
+                case COMPARATOR:
+                    for (Block b : CannonsUtil.HorizontalSurroundingBlocks(block))
+                    {
+                        cannon = cannonManager.getCannon(b.getLocation(), null);
+                        if (cannon != null)
+                        {
+                            // there is cannon next to the wire - check if the wire
+                            // is place right
+                            if (cannon.isRedstoneRepeaterInterface(block.getLocation()))
+                            {
+                                MessageEnum message = fireCannon.redstoneFiring(cannon, InteractAction.fireRedstone);
+                            }
+
+                        }
+                    }
+                    break;
             }
         }
-
 
         // ##########  fire with redstone trigger ######
-        Cannon cannon = cannonManager.getCannon(block.getLocation(), null);
+        cannon = cannonManager.getCannon(block.getLocation(), null);
         if (cannon != null)
         {
             //check if this is a redstone trigger of the cannon (e.g. button)
-            if (cannon.isRestoneTrigger(event.getBlock().getLocation()))
+            if (cannon.isRestoneTrigger(block.getLocation()))
             {
                 //get the user of the cannon
                 Player player;
@@ -332,7 +329,6 @@ public class PlayerListener implements Listener
                 userMessages.sendMessage(message, player, cannon);
             }
         }
-
 
     }
 
