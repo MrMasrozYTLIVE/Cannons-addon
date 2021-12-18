@@ -410,7 +410,7 @@ public class FireCannon {
                     players.add(p);
                 }
             }
-            imitateSmoke(c, players);
+            //imitateSmoke(c, players); // CCNet: Disable (optimization)
         }
     }
 
