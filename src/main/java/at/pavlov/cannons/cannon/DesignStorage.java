@@ -301,6 +301,7 @@ public class DesignStorage
         cannonDesign.setExplodingLoadedCannons(cannonDesignConfig.getDouble("realisticBehaviour.explodingLoadedCannon",2.0));
         cannonDesign.setFireAfterLoading(cannonDesignConfig.getBoolean("realisticBehaviour.fireAfterLoading", false));
 		cannonDesign.setDismantlingDelay(cannonDesignConfig.getDouble("realisticBehaviour.dismantlingDelay", 1.75));
+		cannonDesign.setHasMuzzleFlash(cannonDesignConfig.getBoolean("realisticBehaviour.hasMuzzleFlash", true));
 
 		// permissions
 		cannonDesign.setPermissionBuild(cannonDesignConfig.getString("permissions.build", "cannons.player.build"));

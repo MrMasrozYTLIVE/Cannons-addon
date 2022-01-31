@@ -128,6 +128,7 @@ public class CannonDesign
     private double explodingLoadedCannons;
     private boolean fireAfterLoading;
     private double dismantlingDelay;
+	private boolean hasMuzzleFlash;
 	
 	//permissions
 	private String permissionBuild;
@@ -1634,5 +1635,14 @@ public class CannonDesign
 
 	public void setLinkCannonsDistance(int linkCannonsDistance) {
 		this.linkCannonsDistance = linkCannonsDistance;
+	}
+
+	public boolean hasMuzzleFlash()
+	{
+		return hasMuzzleFlash;
+	}
+	public void setHasMuzzleFlash(boolean hasMuzzleFlash)
+	{
+		this.hasMuzzleFlash = hasMuzzleFlash;
 	}
 }
