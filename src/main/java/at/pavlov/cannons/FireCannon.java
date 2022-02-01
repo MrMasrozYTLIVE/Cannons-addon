@@ -14,10 +14,13 @@ import at.pavlov.cannons.utils.DelayedTask;
 import at.pavlov.cannons.utils.FireTaskWrapper;
 import org.bukkit.*;
 import org.bukkit.block.BlockFace;
+import org.bukkit.block.data.BlockData;
+import org.bukkit.block.data.type.Light;
 import org.bukkit.entity.*;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
+import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 
 import at.pavlov.cannons.cannon.Cannon;
@@ -397,6 +400,22 @@ public class FireCannon {
         if (c.getCannonDesign().hasMuzzleFlash()) {
             loc.getWorld().spawnParticle(Particle.EXPLOSION_HUGE, loc, 1, 0, 0, 0, 0, null, true);
             loc.getWorld().spawnParticle(Particle.FLASH, loc, 1, 0, 0, 0, 0, null, true);
+
+            BlockData airBlockData = Bukkit.createBlockData(Material.AIR);
+            Light lightBlockData = (Light) Bukkit.createBlockData(Material.LIGHT);
+            lightBlockData.setLevel(15);
+            for (Player player: Bukkit.getOnlinePlayers()) {
+                // TODO: use no-tick view distance - CCNet
+                if (player.getLocation().distanceSquared(c.getMuzzle()) <= Math.pow(player.getViewDistance() * 16, 2)) {
+                    player.sendBlockChange(c.getMuzzle(), lightBlockData);
+                    new BukkitRunnable() {
+                        @Override
+                        public void run() {
+                            player.sendBlockChange(c.getMuzzle(), airBlockData);
+                        }
+                    }.runTaskLater(Cannons.getPlugin(), 1L);
+                }
+            }
         }
         //fake blocks effects for far distance
         if (config.isImitatedFiringEffectEnabled()) {
