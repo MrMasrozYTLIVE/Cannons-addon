@@ -404,7 +404,7 @@ public class FireCannon {
             BlockData airBlockData = Bukkit.createBlockData(Material.AIR);
             Light lightBlockData = (Light) Bukkit.createBlockData(Material.LIGHT);
             lightBlockData.setLevel(15);
-            for (Player player: Bukkit.getOnlinePlayers()) {
+            for (Player player: c.getMuzzle().getWorld().getPlayers()) {
                 // TODO: use no-tick view distance - CCNet
                 if (player.getLocation().distanceSquared(c.getMuzzle()) <= Math.pow(player.getViewDistance() * 16, 2)) {
                     player.sendBlockChange(c.getMuzzle(), lightBlockData);
