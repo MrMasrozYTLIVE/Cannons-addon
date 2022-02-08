@@ -26,7 +26,6 @@ import org.bukkit.util.Vector;
 import at.pavlov.cannons.cannon.Cannon;
 import at.pavlov.cannons.cannon.CannonDesign;
 import at.pavlov.cannons.config.Config;
-import at.pavlov.cannons.cannon.DesignStorage;
 import at.pavlov.cannons.projectile.Projectile;
 import at.pavlov.cannons.projectile.ProjectileProperties;
 
@@ -292,7 +291,7 @@ public class FireCannon {
             }, delayTime);
         }
 
-        cannon.setNumLoadedProjectiles(cannon.getNumLoadedProjectiles() - 1);
+        cannon.setChargesRemaining(cannon.getChargesRemaining() - 1);
         return message;
     }
 
@@ -380,7 +379,7 @@ public class FireCannon {
 
             plugin.logDebug("fire event complete, attempting to remove charge from the cannon");
             //removes the gunpowder and projectile loaded in the cannon if not set otherwise
-            if (design.isRemoveChargeAfterFiring() && cannon.getNumLoadedProjectiles() <= 0) // CCNet - magazine sizes
+            if (design.isRemoveChargeAfterFiring() && cannon.getChargesRemaining() <= 0) // CCNet - magazine sizes
                 cannon.removeCharge();
         }
     }

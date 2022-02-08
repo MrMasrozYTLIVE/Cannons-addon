@@ -27,7 +27,7 @@ public class SaveCannonTask extends BukkitRunnable {
             return;
 
         String insert = String.format("REPLACE INTO %s " +
-                "(id, name, owner, world, cannon_direction, loc_x, loc_y, loc_Z, soot, gunpowder, projectile_id, projectile_pushed, cannon_temperature, cannon_temperature_timestamp, horizontal_angle, vertical_angle, design_id, fired_cannonballs, target_mob, target_player, target_cannon, target_other, paid, num_loaded_projectiles) VALUES" +
+                "(id, name, owner, world, cannon_direction, loc_x, loc_y, loc_Z, soot, gunpowder, projectile_id, projectile_pushed, cannon_temperature, cannon_temperature_timestamp, horizontal_angle, vertical_angle, design_id, fired_cannonballs, target_mob, target_player, target_cannon, target_other, paid, charges_remaining) VALUES" +
                 "(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)"
                 , Cannons.getPlugin().getCannonDatabase());
         try (PreparedStatement preparedStatement = Cannons.getPlugin().getConnection().prepareStatement(insert)) {
@@ -106,7 +106,7 @@ public class SaveCannonTask extends BukkitRunnable {
                 preparedStatement.setBoolean(23,cannon.isPaid());
 
                 // CCNet - save number of loaded projectiles
-                preparedStatement.setInt(24, cannon.getNumLoadedProjectiles());
+                preparedStatement.setInt(24, cannon.getChargesRemaining());
 
                 preparedStatement.addBatch();
             }

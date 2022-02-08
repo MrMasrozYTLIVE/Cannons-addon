@@ -33,7 +33,7 @@ public class CreateTableTask extends BukkitRunnable {
                         "target_cannon BOOLEAN," +
                         "target_other BOOLEAN," +
                         "paid BOOLEAN," +
-                        "num_loaded_projectiles INTEGER)"
+                        "charges_remaining INTEGER)"
                 , Cannons.getPlugin().getCannonDatabase());
         String sql2 = String.format("CREATE TABLE IF NOT EXISTS %s (" +
                         "cannon_bean_id VARCHAR(40) NOT NULL," +

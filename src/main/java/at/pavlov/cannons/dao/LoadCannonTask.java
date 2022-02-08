@@ -3,7 +3,6 @@ package at.pavlov.cannons.dao;
 import at.pavlov.cannons.Cannons;
 import at.pavlov.cannons.cannon.Cannon;
 import at.pavlov.cannons.cannon.CannonDesign;
-import at.pavlov.cannons.cannon.CannonManager;
 import at.pavlov.cannons.projectile.ProjectileStorage;
 import at.pavlov.cannons.scheduler.CreateCannon;
 import org.bukkit.Bukkit;
@@ -15,7 +14,6 @@ import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.util.Vector;
 
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.UUID;
@@ -115,7 +113,7 @@ public class LoadCannonTask extends BukkitRunnable{
                     cannon.setPaid(rs.getBoolean("paid"));
 
                     // CCNet - number of loaded projectiles
-                    cannon.setNumLoadedProjectiles(rs.getInt("num_loaded_projectiles"));
+                    cannon.setChargesRemaining(rs.getInt("charges_remaining"));
 
                     //add a cannon to the cannon list
                     BukkitTask task = new CreateCannon(Cannons.getPlugin(), cannon, false).runTask(Cannons.getPlugin());

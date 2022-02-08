@@ -150,8 +150,8 @@ public class Cannon
     // redstone handling event. Last player that pressed the firing button is saved in this list for the next redstone event
     private String firingButtonActivator;
 
-    // CCNet - number of loaded projectiles
-    private int numLoadedProjectiles;
+    // CCNet - number of remaining projectile charges
+    private int numLoadedCharges;
 
 
     public Cannon(CannonDesign design, UUID world, Vector cannonOffset, BlockFace cannonDirection, UUID owner)
@@ -196,7 +196,7 @@ public class Cannon
             this.setLoadedGunpowder(0);
         if (design.isPreloaded()) {
             this.setLoadedProjectile(this.getDefaultProjectile(this));
-            this.setNumLoadedProjectiles(this.getDefaultProjectile(this).getMagazineSize());
+            this.setChargesRemaining(this.getDefaultProjectile(this).getCharges());
         }
         else
             this.setLoadedProjectile(null);
@@ -588,7 +588,7 @@ public class Cannon
             updateCannonSigns();
 
             // CCNet - load projectiles
-            setNumLoadedProjectiles(projectile.getMagazineSize());
+            setChargesRemaining(projectile.getCharges());
         }
         else
         {
@@ -2808,11 +2808,11 @@ public class Cannon
     }
 
     // CCNet
-    public void setNumLoadedProjectiles(int number) {
-        this.numLoadedProjectiles = number;
+    public void setChargesRemaining(int number) {
+        this.numLoadedCharges = number;
     }
 
-    public int getNumLoadedProjectiles() {
-        return this.numLoadedProjectiles;
+    public int getChargesRemaining() {
+        return this.numLoadedCharges;
     }
 }

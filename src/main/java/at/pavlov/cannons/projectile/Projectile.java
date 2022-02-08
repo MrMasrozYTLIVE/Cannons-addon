@@ -106,7 +106,7 @@ public class Projectile implements Cloneable{
 	private List<String> permissionLoad = new ArrayList<String>();
 
 	// CCNet
-	private int magazineSize;
+	private int numberOfCharges;
 
 	public Projectile(String id)
 	{
@@ -793,11 +793,11 @@ public class Projectile implements Cloneable{
 	}
 
 	// CCNet
-	public int getMagazineSize() {
-		return this.magazineSize;
+	public int getCharges() {
+		return this.numberOfCharges;
 	}
 
-	public void setMagazineSize(int size) {
-		this.magazineSize = size;
+	public void setCharges(int amount) {
+		this.numberOfCharges = amount;
 	}
 }

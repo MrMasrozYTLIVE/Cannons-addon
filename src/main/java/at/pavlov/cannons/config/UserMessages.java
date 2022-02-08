@@ -312,6 +312,8 @@ public class UserMessages {
 				message = message.replace("PROJECTILE", cannon.getLoadedProjectile().getProjectileName());
             else
                 message = message.replace("PROJECTILE", "none");
+			// CCNet - replace the number of charges remaining
+			message = message.replace("CHARGES_REMAINING", Integer.toString(cannon.getChargesRemaining()));
 			//replace the horizontal angle
 			message = message.replace("HDEGREE", String.format("%.1f", cannon.getHorizontalAngle()));
 			//replace the vertical angle
@@ -338,7 +340,7 @@ public class UserMessages {
             //pushing projectile
             message = message.replace("PUSHING_LEFT", Integer.toString(cannon.getProjectilePushed()));
 			// CCNet - magazine size
-			message = message.replace("LEFT_IN_MAGAZINE", Integer.toString((int) Math.floor(cannon.getNumLoadedProjectiles())));
+			message = message.replace("CHARGES_REMAINING", Integer.toString((int) Math.floor(cannon.getChargesRemaining())));
 			//economy
 			if (plugin.getEconomy() != null) {
 				message = message.replace("BUILD_COSTS", plugin.getEconomy().format(cannon.getCannonDesign().getEconomyBuildingCost()));
