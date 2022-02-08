@@ -105,6 +105,9 @@ public class Projectile implements Cloneable{
 	//permissions
 	private List<String> permissionLoad = new ArrayList<String>();
 
+	// CCNet
+	private int magazineSize;
+
 	public Projectile(String id)
 	{
 		this.projectileID = id;
@@ -787,5 +790,14 @@ public class Projectile implements Cloneable{
 
 	public void setSentryIgnoredBlocks(int sentryIgnoredBlocks) {
 		this.sentryIgnoredBlocks = sentryIgnoredBlocks;
+	}
+
+	// CCNet
+	public int getMagazineSize() {
+		return this.magazineSize;
+	}
+
+	public void setMagazineSize(int size) {
+		this.magazineSize = size;
 	}
 }

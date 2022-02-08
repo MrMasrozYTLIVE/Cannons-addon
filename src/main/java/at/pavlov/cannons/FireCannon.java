@@ -292,6 +292,7 @@ public class FireCannon {
             }, delayTime);
         }
 
+        cannon.setNumLoadedProjectiles(cannon.getNumLoadedProjectiles() - 1);
         return message;
     }
 
@@ -377,9 +378,9 @@ public class FireCannon {
         {
             cannon.setProjectilePushed(design.getProjectilePushing());
 
-            plugin.logDebug("fire event complete, charge removed from the cannon");
+            plugin.logDebug("fire event complete, attempting to remove charge from the cannon");
             //removes the gunpowder and projectile loaded in the cannon if not set otherwise
-            if (design.isRemoveChargeAfterFiring())
+            if (design.isRemoveChargeAfterFiring() && cannon.getNumLoadedProjectiles() <= 0) // CCNet - magazine sizes
                 cannon.removeCharge();
         }
     }

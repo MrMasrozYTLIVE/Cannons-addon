@@ -212,6 +212,7 @@ public class ProjectileStorage
 		projectile.setTimefuse(projectileConfig.getDouble("cannonball.timefuse", 0.0));
 		projectile.setAutomaticFiringDelay(projectileConfig.getDouble("cannonball.automaticFiringDelay", 1.0));
 		projectile.setAutomaticFiringMagazineSize(projectileConfig.getInt("cannonball.automaticFiringMagazineSize", 1));
+		projectile.setMagazineSize(projectileConfig.getInt("cannonball.magazineSize", 1)); // CCNet
 		projectile.setNumberOfBullets(projectileConfig.getInt("cannonball.numberOfBullets", 1));
 		projectile.setSpreadMultiplier(projectileConfig.getDouble("cannonball.spreadMultiplier", 1.0));
 		projectile.setSentryIgnoredBlocks(projectileConfig.getInt("cannonball.sentryIgnoredBlocks", 0));

@@ -337,6 +337,8 @@ public class UserMessages {
             message = message.replace("SOOT", String.format("%.1f", cannon.getSoot()));
             //pushing projectile
             message = message.replace("PUSHING_LEFT", Integer.toString(cannon.getProjectilePushed()));
+			// CCNet - magazine size
+			message = message.replace("LEFT_IN_MAGAZINE", Integer.toString((int) Math.floor(cannon.getNumLoadedProjectiles())));
 			//economy
 			if (plugin.getEconomy() != null) {
 				message = message.replace("BUILD_COSTS", plugin.getEconomy().format(cannon.getCannonDesign().getEconomyBuildingCost()));

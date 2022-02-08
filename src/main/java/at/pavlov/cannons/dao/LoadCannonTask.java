@@ -114,6 +114,9 @@ public class LoadCannonTask extends BukkitRunnable{
                     // cannon fee
                     cannon.setPaid(rs.getBoolean("paid"));
 
+                    // CCNet - number of loaded projectiles
+                    cannon.setNumLoadedProjectiles(rs.getInt("num_loaded_projectiles"));
+
                     //add a cannon to the cannon list
                     BukkitTask task = new CreateCannon(Cannons.getPlugin(), cannon, false).runTask(Cannons.getPlugin());
                     //plugin.createCannon(cannon);
