@@ -1968,6 +1968,9 @@ public class Cannon
     public void setLoadedProjectile(Projectile loadedProjectile)
     {
         this.loadedProjectile = loadedProjectile;
+        if (loadedProjectile != null) {
+            this.numLoadedCharges = loadedProjectile.getCharges();
+        }
         this.hasUpdated();
     }
 
