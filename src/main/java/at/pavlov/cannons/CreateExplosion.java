@@ -901,6 +901,10 @@ public class CreateExplosion {
 	    this.fireEntityDeathEvent(cannonball);
 	    // place blocks around the impact like webs, lava, water
 	    this.spreadEntities(cannonball);
+		// CCNet - spawn flash
+		if (blockDamage) {
+			world.spawnParticle(Particle.FLASH, impactLoc, 1, 0, 0, 0, 0, null, true);
+		}
 	}
     }
 
