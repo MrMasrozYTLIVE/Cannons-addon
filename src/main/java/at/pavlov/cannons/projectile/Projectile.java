@@ -107,6 +107,7 @@ public class Projectile implements Cloneable{
 
 	// CCNet
 	private int numberOfCharges;
+	private int impactDurabilityDamage;
 
 	public Projectile(String id)
 	{
@@ -799,5 +800,13 @@ public class Projectile implements Cloneable{
 
 	public void setCharges(int amount) {
 		this.numberOfCharges = amount;
+	}
+
+	public int getImpactDurabilityDamage() {
+		return this.impactDurabilityDamage;
+	}
+
+	public void setImpactDurabilityDamage(int damage) {
+		this.impactDurabilityDamage = damage;
 	}
 }
