@@ -779,7 +779,7 @@ public class CreateExplosion {
 	this.damageMap.put(entity, directHit);
 	this.addAffectedEntity(entity);
 	// explode the cannonball
-	this.detonate(cannonball, projectile_entity);
+	this.detonate(cannonball, projectile_entity, null);
     }
 
     /**
@@ -788,7 +788,7 @@ public class CreateExplosion {
      * @param cannonball
      *            cannonball which will explode
      */
-    public void detonate(FlyingProjectile cannonball, org.bukkit.entity.Projectile projectile_entity) {
+    public void detonate(FlyingProjectile cannonball, org.bukkit.entity.Projectile projectile_entity, BlockFace hitBlockFace) {
 	this.plugin.logDebug("detonate cannonball");
 	if (cannonball.hasDetonated()) {
 		return;
@@ -848,7 +848,7 @@ public class CreateExplosion {
 
 	// fire impact event
 	ProjectileImpactEvent impactEvent = new ProjectileImpactEvent(projectile, impactLoc,
-		cannonball.getShooterUID(), cannonball);     // CCNet - expose FlyingProjectile
+		cannonball.getShooterUID(), cannonball, hitBlockFace);     // CCNet - expose FlyingProjectile and hit BlockFace
 		Bukkit.getServer().getPluginManager().callEvent(impactEvent);
 	canceled = impactEvent.isCancelled();
 

@@ -6,6 +6,7 @@ import at.pavlov.cannons.utils.DelayedTask;
 import org.apache.commons.lang.Validate;
 import org.bukkit.Location;
 import org.bukkit.World;
+import org.bukkit.block.BlockFace;
 import org.bukkit.entity.*;
 import org.bukkit.util.Vector;
 
@@ -95,7 +96,7 @@ public class ProjectileManager
                         org.bukkit.entity.Projectile projectile_entity = fproj.getProjectileEntity();
                         //the projectile might be null
                         if (projectile_entity != null) {
-                            plugin.getExplosion().detonate(cannonball, projectile_entity);
+                            plugin.getExplosion().detonate(cannonball, projectile_entity, null);
                             projectile_entity.remove();
                         }
                         flyingProjectilesMap.remove(cannonball.getUID());
@@ -109,7 +110,7 @@ public class ProjectileManager
      * detonates the given projectile entity
      * @param projectile - the projectile with this entity
      */
-    public void detonateProjectile(Entity projectile)
+    public void detonateProjectile(Entity projectile, BlockFace hitBlockFace)
     {
         if(projectile == null || !(projectile instanceof org.bukkit.entity.Projectile))
             return;
@@ -117,7 +118,7 @@ public class ProjectileManager
         FlyingProjectile fproj = flyingProjectilesMap.get(projectile.getUniqueId());
         if (fproj!=null)
         {
-            plugin.getExplosion().detonate(fproj, (org.bukkit.entity.Projectile) projectile);
+            plugin.getExplosion().detonate(fproj, (org.bukkit.entity.Projectile) projectile, hitBlockFace);
             projectile.remove();
             flyingProjectilesMap.remove(fproj.getUID());
         }

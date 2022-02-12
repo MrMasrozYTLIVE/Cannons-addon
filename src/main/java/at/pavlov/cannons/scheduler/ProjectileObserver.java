@@ -201,7 +201,7 @@ public class ProjectileObserver {
         {
             cannonball.revertUpdate();
             cannonball.teleportToPrediction(projectile_entity);
-            plugin.getExplosion().detonate(cannonball, projectile_entity);
+            plugin.getExplosion().detonate(cannonball, projectile_entity, null);
             projectile_entity.remove();
             return true;
         }

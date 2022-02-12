@@ -4,10 +4,12 @@ import java.util.UUID;
 
 import at.pavlov.cannons.projectile.FlyingProjectile;
 import org.bukkit.Location;
+import org.bukkit.block.BlockFace;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 
 import at.pavlov.cannons.projectile.Projectile;
+import org.jetbrains.annotations.Nullable;
 
 public class ProjectileImpactEvent extends Event {
     private static final HandlerList handlers = new HandlerList();
@@ -16,13 +18,16 @@ public class ProjectileImpactEvent extends Event {
     private final UUID shooter;
     private boolean cancelled;
     private FlyingProjectile flyingProjectile;
+    @Nullable
+    private BlockFace hitBlockFace;
 
-    public ProjectileImpactEvent(Projectile projectile, Location impactLocation, UUID shooter, FlyingProjectile flyingProjectile) {
+    public ProjectileImpactEvent(Projectile projectile, Location impactLocation, UUID shooter, FlyingProjectile flyingProjectile, BlockFace hitBlockFace) {
 	this.projectile = projectile;
 	this.impactLocation = impactLocation;
 	this.shooter = shooter;
 	this.cancelled = false;
     this.flyingProjectile = flyingProjectile;
+    this.hitBlockFace = hitBlockFace;
     }
 
     public UUID getShooterUID() {
@@ -52,6 +57,16 @@ public class ProjectileImpactEvent extends Event {
 
     public void setFlyingProjectile(FlyingProjectile flyingProjectile) {
         this.flyingProjectile = flyingProjectile;
+    }
+
+    // CCNet - hit BlockFace
+    @Nullable
+    public BlockFace getHitBlockFace() {
+        return this.hitBlockFace;
+    }
+
+    public void setHitBlockFace(@Nullable BlockFace face) {
+        this.hitBlockFace = face;
     }
 
     public boolean isCancelled() {

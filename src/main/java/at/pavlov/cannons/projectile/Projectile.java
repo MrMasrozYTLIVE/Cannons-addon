@@ -108,6 +108,7 @@ public class Projectile implements Cloneable{
 	// CCNet
 	private int numberOfCharges;
 	private int impactDurabilityDamage;
+	private double deflectionFactor;
 
 	public Projectile(String id)
 	{
@@ -808,5 +809,13 @@ public class Projectile implements Cloneable{
 
 	public void setImpactDurabilityDamage(int damage) {
 		this.impactDurabilityDamage = damage;
+	}
+
+	public double getDeflectionFactor() {
+		return this.deflectionFactor;
+	}
+
+	public void setDeflectionFactor(double factor) {
+		this.deflectionFactor = factor;
 	}
 }

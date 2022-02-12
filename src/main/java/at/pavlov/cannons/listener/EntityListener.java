@@ -73,7 +73,7 @@ public class EntityListener implements Listener
 	@EventHandler
 	public void ProjectileHit(ProjectileHitEvent event)
 	{
-        plugin.getProjectileManager().detonateProjectile(event.getEntity());
+        plugin.getProjectileManager().detonateProjectile(event.getEntity(), event.getHitBlockFace());
 	}
 	
 	/**
