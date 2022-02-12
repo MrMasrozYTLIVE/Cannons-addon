@@ -848,8 +848,8 @@ public class CreateExplosion {
 
 	// fire impact event
 	ProjectileImpactEvent impactEvent = new ProjectileImpactEvent(projectile, impactLoc,
-		cannonball.getShooterUID());
-	Bukkit.getServer().getPluginManager().callEvent(impactEvent);
+		cannonball.getShooterUID(), cannonball);     // CCNet - expose FlyingProjectile
+		Bukkit.getServer().getPluginManager().callEvent(impactEvent);
 	canceled = impactEvent.isCancelled();
 
 	this.currentCannonball = cannonball;

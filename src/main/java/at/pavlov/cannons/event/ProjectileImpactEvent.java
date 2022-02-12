@@ -2,6 +2,7 @@ package at.pavlov.cannons.event;
 
 import java.util.UUID;
 
+import at.pavlov.cannons.projectile.FlyingProjectile;
 import org.bukkit.Location;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
@@ -14,12 +15,14 @@ public class ProjectileImpactEvent extends Event {
     private Location impactLocation;
     private final UUID shooter;
     private boolean cancelled;
+    private FlyingProjectile flyingProjectile;
 
-    public ProjectileImpactEvent(Projectile projectile, Location impactLocation, UUID shooter) {
+    public ProjectileImpactEvent(Projectile projectile, Location impactLocation, UUID shooter, FlyingProjectile flyingProjectile) {
 	this.projectile = projectile;
 	this.impactLocation = impactLocation;
 	this.shooter = shooter;
 	this.cancelled = false;
+    this.flyingProjectile = flyingProjectile;
     }
 
     public UUID getShooterUID() {
@@ -40,6 +43,15 @@ public class ProjectileImpactEvent extends Event {
 
     public void setProjectile(Projectile projectile) {
 	this.projectile = projectile;
+    }
+
+    // CCNet - expose FlyingProjectile
+    public FlyingProjectile getFlyingProjectile() {
+        return this.flyingProjectile;
+    }
+
+    public void setFlyingProjectile(FlyingProjectile flyingProjectile) {
+        this.flyingProjectile = flyingProjectile;
     }
 
     public boolean isCancelled() {
