@@ -811,13 +811,16 @@ public class Cannon
             getWorldBukkit().dropItemNaturally(design.getMuzzle(this), powder);
         }
 
-        // drop projectile
-        if (isLoaded())
-        {
-            getWorldBukkit().dropItemNaturally(design.getMuzzle(this), loadedProjectile.getLoadingItem().toItemStack(1));
-        }
         removeCharge();
 
+        // drop projectile
+        if (isLoaded()) {
+            // CCNet - don't drop projectiles which have multiple charges
+            if (loadedProjectile.getCharges() > 1) {
+                return;
+            }
+            getWorldBukkit().dropItemNaturally(design.getMuzzle(this), loadedProjectile.getLoadingItem().toItemStack(1));
+        }
     }
 
     /**
