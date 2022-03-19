@@ -36,8 +36,8 @@ public class CannonManager
     private static final ConcurrentHashMap<UUID, Cannon> cannonList = new ConcurrentHashMap<UUID, Cannon>();
     private static final ConcurrentHashMap<String, UUID> cannonNameMap = new ConcurrentHashMap<String, UUID>();
     private static final Cache<Location, Cannon> cannonCache = CacheBuilder.newBuilder()
-            .expireAfterWrite(20, TimeUnit.SECONDS)
-            .maximumSize(1024)
+            .expireAfterWrite(30, TimeUnit.SECONDS)
+            .maximumSize(2048)
             .build();
 
     private final Cannons plugin;
@@ -637,8 +637,10 @@ public class CannonManager
     {
 
         // is this block material used for a cannon design
-        if (cannonBlock.getBlock() == null || !plugin.getDesignStorage().isCannonBlockMaterial(cannonBlock.getBlock().getType()))
+        Material cannonBlockType = cannonBlock.getBlock().getType();
+        if (!plugin.getDesignStorage().isCannonBlockMaterial(cannonBlockType)) {
             return null;
+        }
 
         World world = cannonBlock.getWorld();
 
@@ -660,7 +662,7 @@ public class CannonManager
                 for (SimpleBlock designBlock : designBlockList)
                 {
                     // compare blocks
-                    if (designBlock.compareMaterialAndFacing(cannonBlock.getBlock()))
+                    if (designBlock.compareMaterialAndFacing(cannonBlock.getBlock(), cannonBlockType))
                     {
                         // this block is same as in the design, get the offset
                         Vector offset = designBlock.subtractInverted(cannonBlock).toVector();
