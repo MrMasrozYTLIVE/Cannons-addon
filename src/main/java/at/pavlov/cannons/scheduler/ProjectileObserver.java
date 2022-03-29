@@ -223,11 +223,17 @@ public class ProjectileObserver {
         int maxDist = (int) plugin.getMyConfig().getImitatedBlockMaximumDistance();
         double smokeDist = proj.getSmokeTrailDistance()*(0.5 + r.nextDouble());
         double smokeDuration = proj.getSmokeTrailDuration()*(0.5 + r.nextGaussian());
+        Location newLoc = cannonball.getExpectedLocation();
+
+        // CCNet - play travel sound
+        Random rand = new Random();
+        if (rand.nextDouble() < 0.01) {
+            CannonsUtil.playSound(newLoc, proj.getTravelSound());
+        }
 
         if (proj.isSmokeTrailEnabled() && cannonball.getExpectedLocation().distance(cannonball.getLastSmokeTrailLocation()) > smokeDist)
         {
             //create a new smoke trail cloud
-            Location newLoc = cannonball.getExpectedLocation();
             cannonball.setLastSmokeTrailLocation(newLoc);
             plugin.logDebug("smoke trail at: " +  newLoc.getBlockX() + "," + newLoc.getBlockY() + "," + newLoc.getBlockZ());
 

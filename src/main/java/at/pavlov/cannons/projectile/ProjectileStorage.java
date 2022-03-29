@@ -282,6 +282,9 @@ public class ProjectileStorage
 		projectile.setSoundImpactProtected(new SoundHolder(projectileConfig.getString("sounds.impactProtected", "ENTITY_GENERIC_EXPLODE:10:0.5")));
 		projectile.setSoundImpactWater(new SoundHolder(projectileConfig.getString("sounds.impactWater", "ENTITY_GENERIC_SPLASH:10:0.3")));
 
+		// CCNet
+		projectile.setTravelSound(new SoundHolder(projectileConfig.getString("sounds.travel", "NONE:1:1")));
+
 		//loadPermissions
 		projectile.setPermissionLoad(projectileConfig.getStringList("loadPermission"));
 

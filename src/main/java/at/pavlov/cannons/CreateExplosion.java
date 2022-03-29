@@ -1199,42 +1199,46 @@ public class CreateExplosion {
      *            the flying projectile
      */
     private void spawnFireworks(FlyingProjectile cannonball, org.bukkit.entity.Projectile projectile_entity) {
-	World world = cannonball.getWorld();
-	Projectile projectile = cannonball.getProjectile();
+		World world = cannonball.getWorld();
+		Projectile projectile = cannonball.getProjectile();
 
-	// a fireworks needs some colors
-	if (!projectile.isFireworksEnabled() || projectile.getFireworksColors().size() == 0)
-	    return;
+		// a fireworks needs some colors
+		if (!projectile.isFireworksEnabled() || projectile.getFireworksColors().size() == 0)
+			return;
 
-	// building the fireworks effect
-	FireworkEffect.Builder fwb = FireworkEffect.builder().flicker(projectile.isFireworksFlicker())
-		.trail(projectile.isFireworksTrail()).with(projectile.getFireworksType());
-	// setting colors
-	for (Integer color : projectile.getFireworksColors()) {
-	    fwb.withColor(Color.fromRGB(color));
+		// building the fireworks effect
+		FireworkEffect.Builder fwb = FireworkEffect.builder().flicker(projectile.isFireworksFlicker())
+			.trail(projectile.isFireworksTrail()).with(projectile.getFireworksType());
+		// setting colors
+		for (Integer color : projectile.getFireworksColors()) {
+			fwb.withColor(Color.fromRGB(color));
+		}
+		for (Integer color : projectile.getFireworksFadeColors()) {
+			fwb.withFade(Color.fromRGB(color));
+		}
+
+		// apply to rocket
+		final Firework fw = (Firework) world.spawnEntity(projectile_entity.getLocation(), EntityType.FIREWORK);
+		FireworkMeta meta = fw.getFireworkMeta();
+
+		meta.addEffect(fwb.build());
+		meta.setPower(0);
+		fw.setFireworkMeta(meta);
+
+		fw.detonate(); // CCNet - detonate instantly
+
+		/*
+		// detonate firework after 1tick. This seems to works much better than
+		// detonating instantaneously
+		this.plugin.getServer().getScheduler().scheduleSyncDelayedTask(this.plugin, new DelayedTask(fw) {
+			@Override
+			public void run(Object object) {
+			Firework fw = (Firework) object;
+			fw.detonate();
+			}
+		}, 1L);
+		 */
 	}
-	for (Integer color : projectile.getFireworksFadeColors()) {
-	    fwb.withFade(Color.fromRGB(color));
-	}
-
-	// apply to rocket
-	final Firework fw = (Firework) world.spawnEntity(projectile_entity.getLocation(), EntityType.FIREWORK);
-	FireworkMeta meta = fw.getFireworkMeta();
-
-	meta.addEffect(fwb.build());
-	meta.setPower(0);
-	fw.setFireworkMeta(meta);
-
-	// detonate firework after 1tick. This seems to works much better than
-	// detonating instantaneously
-	this.plugin.getServer().getScheduler().scheduleSyncDelayedTask(this.plugin, new DelayedTask(fw) {
-	    @Override
-	    public void run(Object object) {
-		Firework fw = (Firework) object;
-		fw.detonate();
-	    }
-	}, 1L);
-    }
 
     /**
      * Broadcasts an explosion with higher volume to the player. Also adds an impact

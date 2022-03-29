@@ -109,6 +109,7 @@ public class Projectile implements Cloneable{
 	private int numberOfCharges;
 	private int impactDurabilityDamage;
 	private double deflectionFactor;
+	private SoundHolder travelSound;
 
 	public Projectile(String id)
 	{
@@ -817,5 +818,13 @@ public class Projectile implements Cloneable{
 
 	public void setDeflectionFactor(double factor) {
 		this.deflectionFactor = factor;
+	}
+
+	public SoundHolder getTravelSound() {
+		return travelSound;
+	}
+
+	public void setTravelSound(SoundHolder projectileTravelSound) {
+		this.travelSound = projectileTravelSound;
 	}
 }
