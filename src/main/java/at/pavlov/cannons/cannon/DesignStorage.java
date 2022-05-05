@@ -5,9 +5,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.text.DecimalFormat;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 
 import com.sk89q.worldedit.WorldEditException;
 import com.sk89q.worldedit.extent.clipboard.Clipboard;
@@ -47,13 +45,13 @@ public class DesignStorage
 	
 	private final List<CannonDesign> cannonDesignList;
 	private final Cannons plugin;
-	private final List<Material> cannonBlockMaterials;
+	private final EnumSet<Material> cannonBlockMaterials;
 
 	public DesignStorage(Cannons cannons)
 	{
 		plugin = cannons;
-		cannonDesignList = new ArrayList<CannonDesign>();
-		cannonBlockMaterials = new ArrayList<>();
+		cannonDesignList = new ArrayList<>();
+		cannonBlockMaterials = EnumSet.noneOf(Material.class);
 	}
 
 	/**
@@ -742,7 +740,7 @@ public class DesignStorage
 		return false;
 	}
 
-	public List<Material> getCannonBlockMaterials() {
+	public Set<Material> getCannonBlockMaterials() {
 		return cannonBlockMaterials;
 	}
 

@@ -19,6 +19,7 @@ import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import org.apache.commons.lang.Validate;
 import org.bukkit.*;
+import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
@@ -525,7 +526,7 @@ public class CannonManager
         long startTime = System.nanoTime();
 
         //check if there is a cannon at this location
-        Cannon cannon = checkCannon(cannonBlock, owner);
+        Cannon cannon = checkCannon(cannonBlock.getBlock(), owner);
 
         //if there is no cannon, exit
         if (cannon == null)
@@ -633,11 +634,12 @@ public class CannonManager
      * @param owner the player who will be the owner of the cannon if it is a new cannon
      * @return cannon if found, else null
      */
-    private Cannon checkCannon(Location cannonBlock, UUID owner)
+    private Cannon checkCannon(Block cannonBlock, UUID owner)
     {
 
         // is this block material used for a cannon design
-        Material cannonBlockType = cannonBlock.getBlock().getType();
+        Location cannonBlockLoc = cannonBlock.getLocation();
+        Material cannonBlockType = cannonBlock.getType();
         if (!plugin.getDesignStorage().isCannonBlockMaterial(cannonBlockType)) {
             return null;
         }
@@ -662,10 +664,10 @@ public class CannonManager
                 for (SimpleBlock designBlock : designBlockList)
                 {
                     // compare blocks
-                    if (designBlock.compareMaterialAndFacing(cannonBlock.getBlock(), cannonBlockType))
+                    if (designBlock.compareMaterialAndFacing(cannonBlock, cannonBlockType))
                     {
                         // this block is same as in the design, get the offset
-                        Vector offset = designBlock.subtractInverted(cannonBlock).toVector();
+                        Vector offset = designBlock.subtractInverted(cannonBlockLoc).toVector();
 
                         // check all other blocks of the cannon
                         boolean isCannon = true;
