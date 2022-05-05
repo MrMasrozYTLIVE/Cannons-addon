@@ -31,7 +31,7 @@ public class BlockListener implements Listener
 	}
 
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void blockExplodeEvent(BlockExplodeEvent event) {
         if (plugin.getMyConfig().isRelayExplosionEvent()) {
             EntityExplodeEvent explodeEvent = new EntityExplodeEvent(null, event.getBlock().getLocation(), event.blockList(), event.getYield());

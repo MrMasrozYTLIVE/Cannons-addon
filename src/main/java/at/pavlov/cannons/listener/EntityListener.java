@@ -10,6 +10,7 @@ import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Projectile;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.*;
 
@@ -80,14 +81,10 @@ public class EntityListener implements Listener
 	 * handles the explosion event. Protects the buttons and torches of a cannon, because they break easily
 	 * @param event
 	 */
-	@EventHandler
+	@EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
 	public void EntityExplode(EntityExplodeEvent event)
 	{
 		plugin.logDebug("Explode event listener called");
-
-		//do nothing if it is cancelled
-		if (event.isCancelled())
-			return;
 		
 		ExplosionEventHandler(event.blockList());
 	}
