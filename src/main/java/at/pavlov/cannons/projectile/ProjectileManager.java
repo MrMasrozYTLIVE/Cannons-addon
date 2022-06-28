@@ -11,12 +11,13 @@ import org.bukkit.entity.*;
 import org.bukkit.util.Vector;
 
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class ProjectileManager
 {
 
     private final Cannons plugin;
-    private final HashMap<UUID, FlyingProjectile> flyingProjectilesMap = new HashMap<UUID, FlyingProjectile>();
+    private final ConcurrentHashMap<UUID, FlyingProjectile> flyingProjectilesMap = new ConcurrentHashMap<>();
 
     /**
      * ProjectileManager
@@ -161,7 +162,7 @@ public class ProjectileManager
      * returns the list of all flying projectiles
      * @return - the list of all flying projectiles
      */
-    public HashMap<UUID, FlyingProjectile> getFlyingProjectiles()
+    public ConcurrentHashMap<UUID, FlyingProjectile> getFlyingProjectiles()
     {
         return flyingProjectilesMap;
     }

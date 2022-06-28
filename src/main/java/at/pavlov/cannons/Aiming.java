@@ -28,6 +28,7 @@ import org.bukkit.util.Vector;
 
 import java.text.DecimalFormat;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 
 public class Aiming {
@@ -65,7 +66,7 @@ public class Aiming {
     private final Config config;
 
     //<Player,cannon name>
-    private HashMap<UUID, UUID> inAimingMode = new HashMap<UUID, UUID>();
+    private ConcurrentHashMap<UUID, UUID> inAimingMode = new ConcurrentHashMap<UUID, UUID>();
 	//<Cannon>
 	private HashSet<UUID> sentryCannons = new HashSet<UUID>();
     //<Player>
