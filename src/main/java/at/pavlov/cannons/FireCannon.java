@@ -222,6 +222,10 @@ public class FireCannon {
             return null;
 
         Projectile projectile = cannon.getLoadedProjectile();
+        // CCNet - null check
+        if (projectile == null) {
+            return MessageEnum.ErrorNoProjectile;
+        }
         //reset after firing
         cannon.setLastFired(System.currentTimeMillis());
         //this cannon is now firing
