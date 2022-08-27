@@ -8,11 +8,13 @@ import at.pavlov.cannons.projectile.FlyingProjectile;
 import at.pavlov.cannons.projectile.Projectile;
 import at.pavlov.cannons.projectile.ProjectileProperties;
 import at.pavlov.cannons.utils.CannonsUtil;
+import io.papermc.paper.entity.RelativeTeleportFlag;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
+import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.util.Vector;
 
 import java.util.Iterator;
@@ -172,7 +174,9 @@ public class ProjectileObserver {
             {
                 optiLoc.setYaw(shooter.getLocation().getYaw());
                 optiLoc.setPitch(shooter.getLocation().getPitch());
-                shooter.teleport(optiLoc);
+
+                // CCNet - relative teleportation
+                shooter.teleport(optiLoc, PlayerTeleportEvent.TeleportCause.PLUGIN, true, true, RelativeTeleportFlag.YAW, RelativeTeleportFlag.PITCH);
             }
         }
     }
