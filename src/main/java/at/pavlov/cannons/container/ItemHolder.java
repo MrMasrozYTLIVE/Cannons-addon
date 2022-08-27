@@ -1,7 +1,7 @@
 package at.pavlov.cannons.container;
 
 import net.kyori.adventure.text.serializer.plain.PlainComponentSerializer;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;

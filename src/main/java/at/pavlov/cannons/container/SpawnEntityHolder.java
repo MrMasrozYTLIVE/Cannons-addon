@@ -2,7 +2,7 @@ package at.pavlov.cannons.container;
 
 import at.pavlov.cannons.Cannons;
 import at.pavlov.cannons.Enum.EntityDataType;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.bukkit.entity.EntityType;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
