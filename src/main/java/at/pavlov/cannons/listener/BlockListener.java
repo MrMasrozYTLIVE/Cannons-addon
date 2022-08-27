@@ -59,7 +59,7 @@ public class BlockListener implements Listener
      * Water will not destroy button and torches
      * @param event
      */
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void BlockFromTo(BlockFromToEvent event)
     {
         Block block = event.getToBlock();
@@ -77,7 +77,7 @@ public class BlockListener implements Listener
      * prevent fire on cannons
      * @param event
      */
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void BlockSpread(BlockSpreadEvent  event)
     {
         Block block = event.getBlock().getRelative(BlockFace.DOWN);
@@ -97,7 +97,7 @@ public class BlockListener implements Listener
      * retraction pistons will trigger this event. If the pulled block is part of a cannon, it is canceled
      * @param event - BlockPistonRetractEvent
      */
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void BlockPistonRetract(BlockPistonRetractEvent event)
     {
         // when piston is sticky and has a cannon block attached delete the
@@ -117,7 +117,7 @@ public class BlockListener implements Listener
      * pushing pistons will trigger this event. If the pused block is part of a cannon, it is canceled
      * @param event - BlockPistonExtendEvent
      */
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void BlockPistonExtend(BlockPistonExtendEvent event)
     {
         // when the moved block is a cannonblock
@@ -136,7 +136,7 @@ public class BlockListener implements Listener
      * if the block catches fire this event is triggered. Cannons can't burn.
      * @param event - BlockBurnEvent
      */
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void BlockBurn(BlockBurnEvent event)
     {
         // the cannon will not burn down
