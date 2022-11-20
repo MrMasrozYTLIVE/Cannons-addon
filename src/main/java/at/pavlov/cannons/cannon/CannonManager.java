@@ -37,8 +37,7 @@ public class CannonManager
     private static final ConcurrentHashMap<UUID, Cannon> cannonList = new ConcurrentHashMap<UUID, Cannon>();
     private static final ConcurrentHashMap<String, UUID> cannonNameMap = new ConcurrentHashMap<String, UUID>();
     private static final Cache<Location, Cannon> cannonCache = CacheBuilder.newBuilder()
-            .expireAfterWrite(30, TimeUnit.SECONDS)
-            .maximumSize(2048)
+            .expireAfterAccess(60, TimeUnit.SECONDS)
             .build();
 
     private final Cannons plugin;
