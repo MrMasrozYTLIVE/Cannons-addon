@@ -1051,13 +1051,12 @@ public class CreateExplosion {
 	    double damage = entry.getValue();
 	    Entity entity = entry.getKey();
 
-	    if (damage >= 1 && entity instanceof LivingEntity) {
-		LivingEntity living = (LivingEntity) entity;
-		this.plugin.logDebug(
+	    if (damage >= 1 && entity instanceof LivingEntity living) {
+			this.plugin.logDebug(
 			"apply damage to entity " + living.getType() + " by " + String.format("%.2f", damage));
 		double health = living.getHealth();
 		living.setNoDamageTicks(0);// It will do damage by each projectile without noDamageTime
-		living.damage(damage);
+		living.damage(damage, cannonball.getProjectileEntity());
 
 		// if player wears armor reduce damage if the player has take damage
 		if (living instanceof HumanEntity && health > living.getHealth()) {
