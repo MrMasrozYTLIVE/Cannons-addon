@@ -833,12 +833,14 @@ public class CreateExplosion {
 	    return;
 	}
 
+	/*
 	// deflect cannonball
 	if (this.deflectProjectile(cannonball)) {
 	    // cannonball was deflected - no explosion
 	    this.plugin.logDebug("Cannonball was deflected");
 	    return;
 	}
+	 */
 
 	boolean incendiary = projectile.hasProperty(ProjectileProperties.INCENDIARY);
 	boolean blockDamage = projectile.getExplosionDamage();
