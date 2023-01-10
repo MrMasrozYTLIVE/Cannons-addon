@@ -478,12 +478,9 @@ public class FireCannon {
             for (Entity next : living)
             {
                 boolean harmEntity = false;
-                if (next instanceof Player)
-                {
-
-                    Player player = (Player) next;
-                    if ( player.isOnline() && !CheckHelmet(player) && player.getGameMode() != GameMode.CREATIVE  )
-                    {
+                if (next instanceof Player player) {
+                    player.playEffect(EntityEffect.HURT);
+                    if (!CheckHelmet(player) && player.getGameMode() != GameMode.CREATIVE) {
                         //if player has no helmet and is not in creative and there are confusion effects - harm him
                         harmEntity = true;
                     }
