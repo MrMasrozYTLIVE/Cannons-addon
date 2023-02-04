@@ -23,7 +23,7 @@ public class TargetManager {
         HashSet<Target> newTargetList = new HashSet<Target>();
 
         for (Target target : targets.values()) {
-            if (target.getCenterLocation().distance(center) < radius)
+            if (target.getCenterLocation().distanceSquared(center) < radius * radius)
                 newTargetList.add(target);
         }
         return newTargetList;

@@ -466,7 +466,7 @@ public class Aiming {
             return false;
         }
 
-        return player.getLocation().distance(locCannon) <= config.getToolAutoaimRange();
+        return player.getLocation().distanceSquared(locCannon) <= config.getToolAutoaimRange() * config.getToolAutoaimRange();
     }
 
 

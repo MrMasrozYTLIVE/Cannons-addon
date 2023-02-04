@@ -631,9 +631,9 @@ public class CreateExplosion {
 	if (next instanceof LivingEntity) {
 	    LivingEntity living = (LivingEntity) next;
 
-	    double dist = impactLoc.distance(living.getEyeLocation());
+	    double dist = impactLoc.distanceSquared(living.getEyeLocation());
 	    // if the entity is too far away, return
-	    if (dist > projectile.getPotionRange())
+	    if (dist > projectile.getPotionRange() * projectile.getPotionRange())
 		return;
 
 	    // duration of the potion effect
@@ -675,9 +675,9 @@ public class CreateExplosion {
 	if (next instanceof LivingEntity) {
 	    LivingEntity living = (LivingEntity) next;
 
-	    double dist = impactLoc.distance((living).getEyeLocation());
+	    double dist = impactLoc.distanceSquared((living).getEyeLocation());
 	    // if the entity is too far away, return
-	    if (dist > projectile.getPlayerDamageRange())
+	    if (dist > projectile.getPlayerDamageRange() * projectile.getPlayerDamageRange())
 		return 0.0;
 
 	    // given damage is in half hearts
@@ -1275,8 +1275,8 @@ public class CreateExplosion {
 			if (config.isImitatedExplosionEnabled()){
 				for (Player p : impactLoc.getWorld().getPlayers()) {
 					Location pl = p.getLocation();
-					double distance = pl.distance(impactLoc);
-					if (distance >= minDist && distance <= maxDist) {
+					double distance = pl.distanceSquared(impactLoc);
+					if (distance >= minDist * minDist && distance <= maxDist * maxDist) {
 						this.plugin.getFakeBlockHandler().imitatedSphere(p, impactLoc, r, mat, FakeBlockType.EXPLOSION, delay);
 					}
 				}

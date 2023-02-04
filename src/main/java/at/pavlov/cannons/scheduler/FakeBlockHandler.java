@@ -138,7 +138,7 @@ public class FakeBlockHandler {
                 for(int z = -r; z<=r; z++)
                 {
                     Location newL = loc.clone().add(x, y, z);
-                    if(newL.distance(loc)<=r)
+                    if(newL.distanceSquared(loc)<=r*r)
                     {
                         sendBlockChangeToPlayer(player, newL, blockData, type, duration);
                     }

@@ -12,6 +12,7 @@ import io.papermc.paper.entity.RelativeTeleportFlag;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
+import org.bukkit.block.data.BlockData;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerTeleportEvent;
@@ -122,14 +123,15 @@ public class ProjectileObserver {
         int maxDist = (int) plugin.getMyConfig().getImitatedBlockMaximumDistance();
         int maxSoundDist = plugin.getMyConfig().getImitatedSoundMaximumDistance();
         float maxVol = plugin.getMyConfig().getImitatedSoundMaximumVolume();
+        BlockData liquidBlockData = Bukkit.createBlockData(liquid.getType());
 
         for(Player p : loc.getWorld().getPlayers())
         {
             Location pl = p.getLocation();
-            double distance = pl.distance(loc);
+            double distance = pl.distanceSquared(loc);
 
-            if(distance <= maxDist)
-                plugin.getFakeBlockHandler().imitatedSphere(p, loc, 1, Bukkit.createBlockData(liquid.getType()), FakeBlockType.WATER_SPLASH, 1.0);
+            if(distance <= maxDist * maxDist)
+                plugin.getFakeBlockHandler().imitatedSphere(p, loc, 1, liquidBlockData, FakeBlockType.WATER_SPLASH, 1.0);
 
         }
         CannonsUtil.imitateSound(loc, sound, maxSoundDist, maxVol);
@@ -235,7 +237,7 @@ public class ProjectileObserver {
             CannonsUtil.playSound(newLoc, proj.getTravelSound());
         }
 
-        if (proj.isSmokeTrailEnabled() && cannonball.getExpectedLocation().distance(cannonball.getLastSmokeTrailLocation()) > smokeDist)
+        if (proj.isSmokeTrailEnabled() && cannonball.getExpectedLocation().distanceSquared(cannonball.getLastSmokeTrailLocation()) > smokeDist * smokeDist)
         {
             //create a new smoke trail cloud
             cannonball.setLastSmokeTrailLocation(newLoc);
@@ -249,9 +251,9 @@ public class ProjectileObserver {
                 if (newLoc.getWorld() != null) {
                     for (Player p : newLoc.getWorld().getPlayers()) {
                         Location pl = p.getLocation();
-                        double distance = pl.distance(newLoc);
+                        double distance = pl.distanceSquared(newLoc);
 
-                        if (distance <= maxDist)
+                        if (distance <= maxDist * maxDist)
                             plugin.getFakeBlockHandler().imitatedSphere(p, newLoc, 0, proj.getSmokeTrailMaterial(), FakeBlockType.SMOKE_TRAIL, smokeDuration);
 
                     }
