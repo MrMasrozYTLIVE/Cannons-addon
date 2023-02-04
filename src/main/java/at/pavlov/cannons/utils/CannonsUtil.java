@@ -797,6 +797,7 @@ public class CannonsUtil
             teleLoc.setPitch(player.getLocation().getPitch());
             player.teleport(teleLoc);
             player.setVelocity(new Vector(0,0,0));
+            player.removePotionEffect(PotionEffectType.INVISIBILITY);
             cannonball.setTeleported(true);
         }
     }

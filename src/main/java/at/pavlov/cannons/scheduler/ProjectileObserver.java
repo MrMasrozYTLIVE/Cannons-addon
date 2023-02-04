@@ -16,6 +16,7 @@ import org.bukkit.block.data.BlockData;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerTeleportEvent;
+import org.bukkit.potion.PotionEffectType;
 import org.bukkit.util.Vector;
 
 import java.util.Iterator;
@@ -179,6 +180,7 @@ public class ProjectileObserver {
 
                 // CCNet - relative teleportation
                 shooter.teleport(optiLoc, PlayerTeleportEvent.TeleportCause.PLUGIN, true, true, RelativeTeleportFlag.YAW, RelativeTeleportFlag.PITCH);
+                shooter.addPotionEffect(PotionEffectType.INVISIBILITY.createEffect(2, 1));
             }
         }
     }
