@@ -244,6 +244,10 @@ public class PlayerListener implements Listener
     @EventHandler
     public void RedstoneEvent(BlockRedstoneEvent event)
     {
+        if (!config.getEnableRedstoneFiring()) {
+            return;
+        }
+
         Block block = event.getBlock();
         Material material = block.getType();
         Cannon cannon;

@@ -5,6 +5,8 @@ general:
   relayExplosionEvent: false
   #size of the box of the claim cannon command
   claimEdgeLength: 60
+  # whether to allow redstone triggers
+  enableRedstoneFiring: true
 
 
 cannonLimits:

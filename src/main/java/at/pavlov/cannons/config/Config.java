@@ -31,6 +31,8 @@ public class Config
 	private boolean debugMode;
     private boolean relayExplosionEvent;
     private int claimEdgeLength;
+
+    private boolean enableRedstoneFiring; // CCNet
 	
 	//build limits
 	private boolean buildLimitEnabled;
@@ -119,6 +121,7 @@ public class Config
 		setDebugMode(plugin.getConfig().getBoolean("general.debugMode", false));
         setRelayExplosionEvent(plugin.getConfig().getBoolean("general.relayExplosionEvent", false));
         setClaimEdgeLength(plugin.getConfig().getInt("general.claimEdgeLength", 60));
+        setEnableRedstoneFiring(plugin.getConfig().getBoolean("general.enableRedstoneFiring", true));
 		
 		//limitOfCannons
 		setBuildLimitEnabled(plugin.getConfig().getBoolean("cannonLimits.useLimits", true));
@@ -604,5 +607,15 @@ public class Config
 
     public void setImitatedExplosionParticlesType(Particle imitatedExplosionParticlesType) {
         this.imitatedExplosionParticlesType = imitatedExplosionParticlesType;
+    }
+
+    // CCNet
+    public void setEnableRedstoneFiring(boolean enableRedstoneFiring) {
+        this.enableRedstoneFiring = enableRedstoneFiring;
+    }
+
+    // CCNet
+    public boolean getEnableRedstoneFiring() {
+        return enableRedstoneFiring;
     }
 }
