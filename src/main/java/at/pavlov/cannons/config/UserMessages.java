@@ -196,7 +196,7 @@ public class UserMessages {
 	public void sendMessage(MessageEnum messageEnum, Player player, Cannon cannon)
 	{
 		//no player no message
-		if (player == null) return;
+		if (player == null || !player.isOnline()) return;
 		if (messageEnum == null) return;
 		
 		//get message from map
@@ -209,7 +209,7 @@ public class UserMessages {
     public void sendImpactMessage(Player player, Location impact, boolean canceled)
     {
         //no player no message
-        if (player == null)
+        if (player == null || !player.isOnline())
             return;
         //no permission no message
         if (!player.hasPermission("cannons.player.impactMessage"))
