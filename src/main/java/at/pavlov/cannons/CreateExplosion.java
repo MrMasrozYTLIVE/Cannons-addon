@@ -1273,11 +1273,12 @@ public class CreateExplosion {
 				impactLoc.getWorld().spawnParticle(Particle.FLASH, impactLoc, 5, 0, 0, 0, 0, null, true);
 			}
 			if (config.isImitatedExplosionEnabled()){
+				var explosionBlocks = plugin.getFakeBlockHandler().imitateSphere(impactLoc, r, mat);
 				for (Player p : impactLoc.getWorld().getPlayers()) {
 					Location pl = p.getLocation();
 					double distance = pl.distanceSquared(impactLoc);
 					if (distance >= minDist * minDist && distance <= maxDist * maxDist) {
-						this.plugin.getFakeBlockHandler().imitatedSphere(p, impactLoc, r, mat, FakeBlockType.EXPLOSION, delay);
+						this.plugin.getFakeBlockHandler().sendBlockChanges(p, explosionBlocks, FakeBlockType.EXPLOSION, delay);
 					}
 				}
 			}

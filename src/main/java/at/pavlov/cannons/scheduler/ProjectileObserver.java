@@ -125,14 +125,14 @@ public class ProjectileObserver {
         float maxVol = plugin.getMyConfig().getImitatedSoundMaximumVolume();
         BlockData liquidBlockData = Bukkit.createBlockData(liquid.getType());
 
-        for(Player p : loc.getWorld().getPlayers())
-        {
+        var splashBlocks = plugin.getFakeBlockHandler().imitateSphere(loc, 1, liquidBlockData);
+        for (Player p : loc.getWorld().getPlayers()) {
             Location pl = p.getLocation();
             double distance = pl.distanceSquared(loc);
 
-            if(distance <= maxDist * maxDist)
-                plugin.getFakeBlockHandler().imitatedSphere(p, loc, 1, liquidBlockData, FakeBlockType.WATER_SPLASH, 1.0);
-
+            if (distance <= maxDist * maxDist) {
+                plugin.getFakeBlockHandler().sendBlockChanges(p, splashBlocks, FakeBlockType.WATER_SPLASH, 1.0);
+            }
         }
         CannonsUtil.imitateSound(loc, sound, maxSoundDist, maxVol);
     }
@@ -249,13 +249,15 @@ public class ProjectileObserver {
             else {
                 // added null if the world was deleted
                 if (newLoc.getWorld() != null) {
+                    var smokeBlocks = plugin.getFakeBlockHandler().imitateSphere(newLoc, 0, proj.getSmokeTrailMaterial());
+
                     for (Player p : newLoc.getWorld().getPlayers()) {
                         Location pl = p.getLocation();
                         double distance = pl.distanceSquared(newLoc);
 
-                        if (distance <= maxDist * maxDist)
-                            plugin.getFakeBlockHandler().imitatedSphere(p, newLoc, 0, proj.getSmokeTrailMaterial(), FakeBlockType.SMOKE_TRAIL, smokeDuration);
-
+                        if (distance <= maxDist * maxDist) {
+                            plugin.getFakeBlockHandler().sendBlockChanges(p, smokeBlocks, FakeBlockType.SMOKE_TRAIL, smokeDuration);
+                        }
                     }
                 }
             }

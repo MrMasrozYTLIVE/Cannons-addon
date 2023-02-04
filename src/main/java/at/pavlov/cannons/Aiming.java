@@ -19,6 +19,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
+import org.bukkit.block.data.BlockData;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
@@ -1259,7 +1260,7 @@ public class Aiming {
 
 
         //make a few iterations until we hit something
-        for (int i=0;start.distance(predictor.getLoc()) < config.getImitatedPredictorDistance() && i < config.getImitatedPredictorIterations(); i++)
+        for (int i=0;start.distanceSquared(predictor.getLoc()) < config.getImitatedPredictorDistance() * config.getImitatedPredictorDistance() && i < config.getImitatedPredictorIterations(); i++)
         {
         	// Ran into an unloaded chunk, terminate further iterations
 			if (!predictor.getLocation().isChunkLoaded()) {
@@ -1311,14 +1312,19 @@ public class Aiming {
                 }
 
                 Location impact = impactPredictor(cannon);
+				Map<Location, BlockData> impactPredictorBlocks = null;
+				if (impact != null) {
+					impactPredictorBlocks = plugin.getFakeBlockHandler().imitateSphere(impact, 1, config.getImitatedPredictorMaterial());
+				}
+
                 Iterator<Map.Entry<UUID, Boolean>> entry = nameList.entrySet().iterator();
                 while(entry.hasNext())
                 {
                     Map.Entry<UUID, Boolean> nextName = entry.next();
                     Player player = Bukkit.getPlayer(nextName.getKey());
                     //show impact to the player
-                    if (player != null && impact != null && plugin.getFakeBlockHandler().belowMaxLimit(player, impact)) {
-                        plugin.getFakeBlockHandler().imitatedSphere(player, impact, 1, config.getImitatedPredictorMaterial(), FakeBlockType.IMPACT_PREDICTOR, config.getImitatedPredictorTime());
+                    if (player != null && impactPredictorBlocks != null && plugin.getFakeBlockHandler().belowMaxLimit(player, impact)) {
+                        plugin.getFakeBlockHandler().sendBlockChanges(player, impactPredictorBlocks, FakeBlockType.IMPACT_PREDICTOR, config.getImitatedPredictorTime());
                     }
                     //remove entry if there removeEntry enabled, or player is offline
                     if (nextName.getValue() || player == null)
@@ -1337,10 +1343,10 @@ public class Aiming {
      * @param player only this player will see this impact marker blocks
      * @return the expected impact location
      */
-    public Location impactPredictor(Cannon cannon, Player player)
-    {
+    public Location impactPredictor(Cannon cannon, Player player) {
         Location surface = impactPredictor(cannon);
-        plugin.getFakeBlockHandler().imitatedSphere(player, surface, 1, config.getImitatedPredictorMaterial(), FakeBlockType.IMPACT_PREDICTOR, config.getImitatedPredictorTime());
+		var impactPredictorBlocks = plugin.getFakeBlockHandler().imitateSphere(surface, 1, config.getImitatedPredictorMaterial());
+        plugin.getFakeBlockHandler().sendBlockChanges(player, impactPredictorBlocks, FakeBlockType.IMPACT_PREDICTOR, config.getImitatedPredictorTime());
         return surface;
     }
 

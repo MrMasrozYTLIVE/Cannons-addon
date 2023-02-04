@@ -2,24 +2,16 @@ package at.pavlov.cannons.scheduler;
 
 import at.pavlov.cannons.Cannons;
 import at.pavlov.cannons.Enum.FakeBlockType;
-import at.pavlov.cannons.cannon.Cannon;
 import at.pavlov.cannons.container.FakeBlockEntry;
-import at.pavlov.cannons.container.ItemHolder;
-import at.pavlov.cannons.listener.Commands;
-import at.pavlov.cannons.utils.CannonsUtil;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.Particle;
-import org.bukkit.block.Block;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.entity.Player;
 import org.bukkit.util.BlockIterator;
 import org.bukkit.util.Vector;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 
 public class FakeBlockHandler {
@@ -117,34 +109,47 @@ public class FakeBlockHandler {
         }
     }
 
-
     /**
-     * creates a sphere of fake block and sends it to the given player
-     * @param player the player to be notified
+     * Creates a sphere of fake block
      * @param loc center of the sphere
      * @param r radius of the sphere
      * @param blockData material of the fake block
-     * @param duration delay until the block disappears again in s
+     * @return a map of the locations and fake block data in the sphere
      */
-    public void imitatedSphere(Player player, Location loc, int r, BlockData blockData, FakeBlockType type, double duration)
-    {
-        if(loc == null || player == null)
-            return;
-
-        for(int x = -r; x <=r; x++)
-        {
-            for(int y = -r; y<=r; y++)
-            {
-                for(int z = -r; z<=r; z++)
-                {
+    @Nullable
+    public Map<Location, BlockData> imitateSphere(@NotNull Location loc, int r, @NotNull BlockData blockData) {
+        Map<Location, BlockData> blockChangeMap = new HashMap<>();
+        for (int x = -r; x <=r; x++) {
+            for (int y = -r; y<=r; y++) {
+                for (int z = -r; z<=r; z++) {
                     Location newL = loc.clone().add(x, y, z);
-                    if(newL.distanceSquared(loc)<=r*r)
-                    {
-                        sendBlockChangeToPlayer(player, newL, blockData, type, duration);
+                    if (newL.distanceSquared(loc) <= r * r) {
+                        blockChangeMap.put(newL, blockData);
                     }
                 }
             }
         }
+        return blockChangeMap;
+    }
+
+
+    /**
+     * Registers fake block changes and sends them to the given player
+     * @param player the player to be notified
+     * @param blockChangeMap a map containing the locations and their corresponding fake block data
+     * @param type the type of fake block change
+     * @param duration delay until the block disappears again in seconds
+     */
+    public void sendBlockChanges(Player player, Map<Location, BlockData> blockChangeMap, FakeBlockType type, double duration) {
+        if (player == null) {
+            return;
+        }
+
+        for (Map.Entry<Location, BlockData> entry: blockChangeMap.entrySet()) {
+            registerBlockChangeToPlayer(player, entry.getKey(), entry.getValue(), type, duration);
+        }
+
+        player.sendMultiBlockChange(blockChangeMap);
     }
 
     /**
@@ -161,12 +166,14 @@ public class FakeBlockHandler {
             return;
 
         BlockIterator iter = new BlockIterator(loc.getWorld(), loc.toVector(), direction, offset, length);
+        Map<Location, BlockData> blockChangeMap = new HashMap<>();
         while (iter.hasNext())
         {
-            //player.spawnParticle(Particle.SOUL_FIRE_FLAME, iter.next().getLocation(), 1, 0, 1, 0, 0); //CCNet: spawn particles
-            sendBlockChangeToPlayer(player, iter.next().getLocation(), blockData, type, duration);
+            Location blockLoc = iter.next().getLocation();
+            blockChangeMap.put(blockLoc, blockData);
+            registerBlockChangeToPlayer(player, blockLoc, blockData, type, duration);
         }
-
+        player.sendMultiBlockChange(blockChangeMap);
     }
 
     /**
@@ -176,12 +183,11 @@ public class FakeBlockHandler {
      * @param blockData type of the block
      * @param duration how long to remove the block in [s]
      */
-    private void sendBlockChangeToPlayer(final Player player, final Location loc, BlockData blockData, FakeBlockType type, double duration)
+    private void registerBlockChangeToPlayer(final Player player, final Location loc, BlockData blockData, FakeBlockType type, double duration)
     {
         //only show block in air
         if(loc.getBlock().isEmpty())
         {
-            long time = System.currentTimeMillis();
             FakeBlockEntry fakeBlockEntry = new FakeBlockEntry(loc, player, type, (long) (duration*20.0));
 
 
@@ -200,9 +206,7 @@ public class FakeBlockHandler {
             }
             if (!found)
             {
-                //plugin.logDebug("new block at: " + loc.getBlockX() + ", " + loc.getBlockY() + ", " + loc.getBlockZ() + ", " + type.toString());
-                //player.sendBlockChange(loc, material.getType(), (byte) material.getData());
-                player.sendBlockChange(loc, blockData);
+                //player.sendBlockChange(loc, blockData);
                 list.add(fakeBlockEntry);
             }
 
