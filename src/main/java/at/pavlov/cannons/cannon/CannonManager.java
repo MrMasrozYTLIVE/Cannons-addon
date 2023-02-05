@@ -30,14 +30,13 @@ import at.pavlov.cannons.config.UserMessages;
 import at.pavlov.cannons.container.SimpleBlock;
 import at.pavlov.cannons.event.CannonAfterCreateEvent;
 import at.pavlov.cannons.event.CannonBeforeCreateEvent;
-import org.jetbrains.annotations.Nullable;
 
 
 public class CannonManager
 {
     private static final ConcurrentHashMap<UUID, Cannon> cannonList = new ConcurrentHashMap<UUID, Cannon>();
     private static final ConcurrentHashMap<String, UUID> cannonNameMap = new ConcurrentHashMap<String, UUID>();
-    private static final Cache<Location, Optional<Cannon>> cannonCache = CacheBuilder.newBuilder()
+    private static final Cache<Location, Cannon> cannonCache = CacheBuilder.newBuilder()
             .expireAfterAccess(60, TimeUnit.SECONDS)
             .build();
 
@@ -467,10 +466,9 @@ public class CannonManager
         return null;
     }
 
-    private @Nullable Cannon getCannonFromLocation(Location location) {
+    private Cannon getCannonFromLocation(Location location) {
         try {
-            Optional<Cannon> optionalCannon = cannonCache.get(location, () -> Optional.ofNullable(getCannonFromStorage(location)));
-            return optionalCannon.orElse(null);
+            return cannonCache.get(location, () -> getCannonFromStorage(location));
         }
         // Throws if there was no cannon at the location (i.e. the cannon is null)
         catch (CacheLoader.InvalidCacheLoadException ex) {
