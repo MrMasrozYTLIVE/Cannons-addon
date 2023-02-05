@@ -32,7 +32,7 @@ public class ItemHolder
         if (item == null){
             material=Material.AIR;
             displayName="";
-            lore = new ArrayList<String>();
+            lore = new ArrayList<>();
             return;
         }
 
@@ -40,7 +40,7 @@ public class ItemHolder
 
 		if (item.hasItemMeta()){
             ItemMeta meta = item.getItemMeta();
-			if (meta.hasDisplayName() && meta.getDisplayName()!=null)
+			if (meta.hasDisplayName())
 				displayName = meta.getDisplayName();
 			else if (!meta.hasDisplayName()){
 				useTypeName = true;
@@ -49,10 +49,10 @@ public class ItemHolder
 			}
 			else
 				displayName = "";
-			if (meta.hasLore() && meta.getLore()!=null)
+			if (meta.hasLore())
 				lore = meta.getLore();
 			else
-				lore = new ArrayList<String>();
+				lore = new ArrayList<>();
 		}
 	}
 
