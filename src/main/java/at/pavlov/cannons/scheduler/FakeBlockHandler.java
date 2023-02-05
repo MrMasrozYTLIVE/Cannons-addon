@@ -123,7 +123,7 @@ public class FakeBlockHandler {
             for (int y = -r; y<=r; y++) {
                 for (int z = -r; z<=r; z++) {
                     Location newL = loc.clone().add(x, y, z);
-                    if (newL.distanceSquared(loc) <= r * r) {
+                    if (newL.distanceSquared(loc) <= r * r && newL.getBlock().getType().isAir()) {
                         blockChangeMap.put(newL, blockData);
                     }
                 }
@@ -170,8 +170,10 @@ public class FakeBlockHandler {
         while (iter.hasNext())
         {
             Location blockLoc = iter.next().getLocation();
-            blockChangeMap.put(blockLoc, blockData);
-            registerBlockChangeToPlayer(player, blockLoc, blockData, type, duration);
+            if (blockLoc.getBlock().getType().isAir()) {
+                blockChangeMap.put(blockLoc, blockData);
+                registerBlockChangeToPlayer(player, blockLoc, blockData, type, duration);
+            }
         }
         player.sendMultiBlockChange(blockChangeMap);
     }
