@@ -360,12 +360,12 @@ public class CannonManager
      */
     public static HashSet<Cannon> getCannonsInSphere(Location center, double sphereRadius)
     {
-        HashSet<Cannon> newCannonList = new HashSet<Cannon>();
+        HashSet<Cannon> newCannonList = new HashSet<>();
 
         for (Cannon cannon : getCannonList().values()) {
             if (cannon.getWorld().equals(center.getWorld().getUID())) {
                 Location newLoc = cannon.getCannonDesign().getBarrelBlocks(cannon).get(0);
-                if (newLoc.distance(center) < sphereRadius)
+                if (newLoc.distanceSquared(center) < sphereRadius * sphereRadius)
                     newCannonList.add(cannon);
             }
         }

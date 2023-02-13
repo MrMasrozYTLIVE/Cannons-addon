@@ -232,11 +232,9 @@ public class FakeBlockHandler {
         if (player == null || loc == null)
             return false;
 
-        double dist = player.getLocation().distance(loc);
-        if (dist > plugin.getMyConfig().getImitatedBlockMinimumDistance() &&
-            dist < plugin.getMyConfig().getImitatedBlockMaximumDistance())
-            return true;
-        return false;
+        double dist = player.getLocation().distanceSquared(loc);
+        return dist > Math.pow(plugin.getMyConfig().getImitatedBlockMinimumDistance(), 2) &&
+                dist < Math.pow(plugin.getMyConfig().getImitatedBlockMaximumDistance(), 2);
     }
 
     /**
@@ -250,10 +248,8 @@ public class FakeBlockHandler {
         if (player == null || loc == null)
             return false;
 
-        double dist = player.getLocation().distance(loc);
-        if (dist < plugin.getMyConfig().getImitatedBlockMaximumDistance())
-            return true;
-        return false;
+        double dist = player.getLocation().distanceSquared(loc);
+        return dist < Math.pow(plugin.getMyConfig().getImitatedBlockMaximumDistance(), 2);
     }
 
 }

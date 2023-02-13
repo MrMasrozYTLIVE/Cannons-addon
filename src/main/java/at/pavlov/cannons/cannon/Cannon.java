@@ -2477,8 +2477,7 @@ public class Cannon
     }
 
     public boolean isChunkLoaded(){
-        Chunk chunk = getLocation().getChunk();
-        return chunk != null && chunk.isLoaded();
+        return getLocation().isChunkLoaded(); // CCNet - optimise
     }
 
     public UUID getSentryEntity() {

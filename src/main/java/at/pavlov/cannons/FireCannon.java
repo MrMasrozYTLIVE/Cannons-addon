@@ -34,8 +34,8 @@ public class FireCannon {
     private final Config config;
     private final Cannons plugin;
 
-
-
+    private final BlockData airBlockData = Bukkit.createBlockData(Material.AIR);
+    private final Light lightBlockData = (Light) Bukkit.createBlockData(Material.LIGHT);
 
     public FireCannon(Cannons plugin, Config config)
     {
@@ -405,12 +405,9 @@ public class FireCannon {
             loc.getWorld().spawnParticle(Particle.EXPLOSION_HUGE, loc, 1, 0, 0, 0, 0, null, true);
             loc.getWorld().spawnParticle(Particle.FLASH, loc, 1, 0, 0, 0, 0, null, true);
 
-            BlockData airBlockData = Bukkit.createBlockData(Material.AIR);
-            Light lightBlockData = (Light) Bukkit.createBlockData(Material.LIGHT);
             lightBlockData.setLevel(15);
-            for (Player player: c.getMuzzle().getWorld().getPlayers()) {
-                // TODO: use no-tick view distance - CCNet
-                if (player.getLocation().distanceSquared(c.getMuzzle()) <= Math.pow(player.getViewDistance() * 16, 2)) {
+            for (Player player: loc.getWorld().getPlayers()) {
+                if (player.getLocation().distanceSquared(c.getMuzzle()) <= Math.pow(player.getSendViewDistance() * 16, 2)) {
                     player.sendBlockChange(c.getMuzzle(), lightBlockData);
                     new BukkitRunnable() {
                         @Override
@@ -426,6 +423,8 @@ public class FireCannon {
             int maxSoundDist = config.getImitatedSoundMaximumDistance();
             CannonsUtil.imitateSound(loc, c.getCannonDesign().getSoundFiring(), maxSoundDist, maxVol);
 
+            /* CCNet - disable (optimisation)
+
             List<Player> players = new ArrayList<Player>();
             for (Player p : loc.getWorld().getPlayers()) {
                 Location pl = p.getLocation();
@@ -435,7 +434,9 @@ public class FireCannon {
                     players.add(p);
                 }
             }
-            //imitateSmoke(c, players); // CCNet: Disable (optimization)
+            imitateSmoke(c, players);
+
+             */
         }
     }
 

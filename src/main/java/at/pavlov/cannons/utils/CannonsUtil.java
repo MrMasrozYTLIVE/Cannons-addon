@@ -854,12 +854,12 @@ public class CannonsUtil
             }
         }
         for (Cannon cannon : CannonManager.getCannonsInSphere(l, maxRadius))
-            if (cannon.getRandomBarrelBlock().distance(l) > minRadius)
+            if (cannon.getRandomBarrelBlock().distanceSquared(l) > minRadius * minRadius)
                 radiusTargets.put(cannon.getUID(), new Target(cannon));
 
         // additional targets from different plugins e.g. ships
         for (Target target : TargetManager.getTargetsInSphere(l, maxRadius))
-            if (target.getCenterLocation().distance(l) > minRadius)
+            if (target.getCenterLocation().distanceSquared(l) > minRadius * minRadius)
                 radiusTargets.put(target.getUniqueId(), target);
         return radiusTargets;
     }
