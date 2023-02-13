@@ -179,8 +179,9 @@ public class ProjectileObserver {
                 optiLoc.setPitch(shooter.getLocation().getPitch());
 
                 // CCNet - relative teleportation
+                shooter.setFallDistance(0f);
                 shooter.teleport(optiLoc, PlayerTeleportEvent.TeleportCause.PLUGIN, true, true, RelativeTeleportFlag.YAW, RelativeTeleportFlag.PITCH);
-                shooter.addPotionEffect(PotionEffectType.INVISIBILITY.createEffect(2, 1));
+                shooter.addPotionEffect(PotionEffectType.INVISIBILITY.createEffect(10, 1));
             }
         }
     }
