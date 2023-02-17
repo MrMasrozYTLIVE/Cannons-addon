@@ -442,7 +442,7 @@ public class UserMessages {
 	private void sendMessage(String string, Player player)
 	{
 		if (string == null) return;
-		if (player == null) return;
+		if (player == null || !player.isOnline()) return;
         if (string.equals(" "))  return;
 		
 		String[] message = string.split("\n "); // Split everytime the "\n" into a new array value
