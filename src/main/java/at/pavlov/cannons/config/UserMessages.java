@@ -329,7 +329,7 @@ public class UserMessages {
                 message = message.replace("CANNON_NAME", cannon.getCannonName());
             message = message.replace("CANNON", cannon.getCannonDesign().getMessageName());
 			message = message.replace("DESCRIPTION", cannon.getCannonDesign().getDescription());
-			if (cannon.getOwner() != null){
+			if (cannon.getOwner() != null && message.contains("OWNER")){
 				OfflinePlayer offplayer = Bukkit.getOfflinePlayer(cannon.getOwner());
 				if (offplayer != null)
 					message = message.replace("OWNER", offplayer.getName());
@@ -348,13 +348,13 @@ public class UserMessages {
 				message = message.replace("DESTRUCTION_REFUND", plugin.getEconomy().format(cannon.getCannonDesign().getEconomyDestructionRefund()));
 			}
 			// show the name of the last whitelisted player
-			if (cannon.getLastWhitelisted() != null) {
+			if (cannon.getLastWhitelisted() != null && message.contains("LASTWHITELISTED")) {
 				OfflinePlayer whiteplayer = Bukkit.getOfflinePlayer(cannon.getLastWhitelisted());
 				if (whiteplayer != null)
 					message = message.replace("LASTWHITELISTED", whiteplayer.getName());
 			}
 			// show whitelist
-			if (cannon.getWhitelist() != null){
+			if (cannon.getWhitelist() != null && !cannon.getWhitelist().isEmpty() && message.contains("WHITELIST")){
 				List<String> names = new ArrayList<String>();
 				for (UUID playerUID : cannon.getWhitelist()){
 					OfflinePlayer offplayer = Bukkit.getOfflinePlayer(playerUID);
