@@ -16,6 +16,7 @@ import org.bukkit.event.entity.*;
 
 import at.pavlov.cannons.Cannons;
 import at.pavlov.cannons.cannon.Cannon;
+import org.bukkit.event.world.EntitiesUnloadEvent;
 
 public class EntityListener implements Listener
 {
@@ -129,4 +130,16 @@ public class EntityListener implements Listener
         for (UUID id : remove)
             plugin.getCannonManager().removeCannon(id, false, true, BreakCause.Explosion);
     }
+
+	/**
+	 * CCNet - Remove unloaded entities from the flying projectiles map
+	 */
+	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+	public void onEntitiesUnload(EntitiesUnloadEvent event) {
+		for (Entity entity: event.getEntities()) {
+			if (entity instanceof Projectile projectile) {
+				Cannons.getPlugin().getProjectileManager().getFlyingProjectiles().remove(projectile.getUniqueId());
+			}
+		}
+	}
 }

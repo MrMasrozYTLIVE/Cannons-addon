@@ -81,8 +81,8 @@ public class FlyingProjectile
 	public org.bukkit.entity.Projectile getProjectileEntity()
 	{
         Entity entity = Bukkit.getWorld(worldUID).getEntity(entityUID);
-        if (entity instanceof org.bukkit.entity.Projectile && entity.getUniqueId().equals(entityUID)) {
-            return (org.bukkit.entity.Projectile) entity;
+        if (entity instanceof org.bukkit.entity.Projectile projectileEntity) {
+            return projectileEntity;
         }
         return null;
         /*
