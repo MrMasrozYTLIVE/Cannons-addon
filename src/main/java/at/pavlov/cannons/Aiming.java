@@ -15,8 +15,6 @@ import at.pavlov.cannons.event.CannonTargetEvent;
 import at.pavlov.cannons.event.CannonUseEvent;
 import at.pavlov.cannons.projectile.Projectile;
 import at.pavlov.cannons.utils.CannonsUtil;
-import net.jodah.expiringmap.ExpirationPolicy;
-import net.jodah.expiringmap.ExpiringMap;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
@@ -32,7 +30,6 @@ import org.bukkit.util.Vector;
 import java.text.DecimalFormat;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.TimeUnit;
 
 
 public class Aiming {
@@ -77,10 +74,7 @@ public class Aiming {
     private HashSet<UUID> imitatedEffectsOff = new HashSet<UUID>();
 
     //<cannon uid, timespamp>
-    private Map<UUID, Long> lastAimed = ExpiringMap.builder()
-			.expiration(1, TimeUnit.MINUTES)
-			.expirationPolicy(ExpirationPolicy.ACCESSED)
-			.build();
+    private HashMap<UUID, Long> lastAimed = new HashMap<UUID, Long>();
 
 
     /**
