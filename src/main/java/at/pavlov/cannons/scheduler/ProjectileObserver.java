@@ -8,12 +8,11 @@ import at.pavlov.cannons.projectile.FlyingProjectile;
 import at.pavlov.cannons.projectile.Projectile;
 import at.pavlov.cannons.projectile.ProjectileProperties;
 import at.pavlov.cannons.utils.CannonsUtil;
-import io.papermc.paper.entity.RelativeTeleportFlag;
+import io.papermc.paper.entity.TeleportFlag;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.block.data.BlockData;
-import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.potion.PotionEffectType;
@@ -179,7 +178,7 @@ public class ProjectileObserver {
                 optiLoc.setPitch(shooter.getLocation().getPitch());
 
                 // CCNet - relative teleportation
-                shooter.teleport(optiLoc, PlayerTeleportEvent.TeleportCause.PLUGIN, true, true, RelativeTeleportFlag.YAW, RelativeTeleportFlag.PITCH);
+                shooter.teleport(optiLoc, PlayerTeleportEvent.TeleportCause.PLUGIN, TeleportFlag.Relative.YAW, TeleportFlag.Relative.PITCH, TeleportFlag.EntityState.RETAIN_OPEN_INVENTORY);
                 shooter.addPotionEffect(PotionEffectType.INVISIBILITY.createEffect(10, 1));
             }
         }
