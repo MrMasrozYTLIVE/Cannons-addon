@@ -1036,16 +1036,22 @@ public class CreateExplosion {
 	    Entity next = it.next();
 
 	    if (next instanceof LivingEntity) {
-		// get previous damage
-		double damage = 0.0;
-		if (this.damageMap.containsKey(next)) {
-		    damage = this.damageMap.get(next);
+			// CCNet - ignite
+			if (projectile.isIgniteEntities()) {
+				next.setFireTicks(projectile.getFireTicks());
+			}
+
+			// get previous damage
+			double damage = 0.0;
+			if (this.damageMap.containsKey(next)) {
+				damage = this.damageMap.get(next);
+			}
+
+			// add explosion damage
+			damage += this.getPlayerDamage(impactLoc, next, cannonball);
+			this.damageMap.put(next, damage);
 		}
 
-		// add explosion damage
-		damage += this.getPlayerDamage(impactLoc, next, cannonball);
-		this.damageMap.put(next, damage);
-	    }
 	}
 
 	// apply sum of all damages

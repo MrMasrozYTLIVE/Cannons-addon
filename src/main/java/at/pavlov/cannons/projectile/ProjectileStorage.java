@@ -284,6 +284,8 @@ public class ProjectileStorage
 
 		// CCNet
 		projectile.setTravelSound(new SoundHolder(projectileConfig.getString("sounds.travel", "NONE:1:1")));
+		projectile.setIgniteEntities(projectileConfig.getBoolean("explosion.igniteEntities", false));
+		projectile.setFireTicks(projectileConfig.getInt("explosion.fireTicks", 0));
 
 		//loadPermissions
 		projectile.setPermissionLoad(projectileConfig.getStringList("loadPermission"));

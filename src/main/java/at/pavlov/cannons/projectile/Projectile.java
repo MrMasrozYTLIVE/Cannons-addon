@@ -111,6 +111,9 @@ public class Projectile implements Cloneable{
 	private double deflectionFactor;
 	private SoundHolder travelSound;
 
+	private boolean igniteEntities;
+	private int fireTicks;
+
 	public Projectile(String id)
 	{
 		this.projectileID = id;
@@ -826,5 +829,21 @@ public class Projectile implements Cloneable{
 
 	public void setTravelSound(SoundHolder projectileTravelSound) {
 		this.travelSound = projectileTravelSound;
+	}
+
+	public boolean isIgniteEntities() {
+		return igniteEntities;
+	}
+
+	public void setIgniteEntities(boolean igniteEntities) {
+		this.igniteEntities = igniteEntities;
+	}
+
+	public int getFireTicks() {
+		return fireTicks;
+	}
+
+	public void setFireTicks(int fireTicks) {
+		this.fireTicks = fireTicks;
 	}
 }
