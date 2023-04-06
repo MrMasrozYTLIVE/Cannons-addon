@@ -34,7 +34,7 @@ public class ProjectileRicochet implements Listener {
             return;
         }
 
-        Vector cannonballDirection = flyingProjectile.getVelocity().normalize();
+        Vector cannonballDirection = flyingProjectile.getEntity().getVelocity().normalize();
         int size = 5;
         Block[][][] blocks = new Block[size][size][size];
 
@@ -110,7 +110,7 @@ public class ProjectileRicochet implements Listener {
 
                 // stop if the projectile hits the ground or a solid block
                 if (currentLoc.getBlock().getType() != Material.AIR) {
-                    flyingProjectile.setCannonUID(null);
+                    flyingProjectile.setShooter(null);
                     this.cancel();
                     return;
                 }
