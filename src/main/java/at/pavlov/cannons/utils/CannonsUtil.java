@@ -651,6 +651,9 @@ public class CannonsUtil
         if (!start.getBlock().isEmpty())
             return start;
 
+	if (direction.lengthSquared() < 0.01)
+            return start;
+
         //int length = (int) (direction.length()*3);
         BlockIterator iter = new BlockIterator(world, start.toVector(), direction.clone().normalize(), 0, 10);
 
